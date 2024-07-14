@@ -1,0 +1,25 @@
+{
+  "name": "nomox-untangler",
+  "version": "1.0.0",
+  "description": "",
+  "scripts": {
+    "start": "nodemon src/index.ts | pino-pretty",
+    "format": "npx @biomejs/biome format --write ./src",
+    "build": "tsc"
+  },
+  "author": "nedoxff",
+  "license": "MIT",
+  "devDependencies": {
+    "@biomejs/biome": "1.8.3",
+    "@types/express": "^4.17.21",
+    "@types/node": "^20.14.10",
+    "nodemon": "^3.1.4",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.5.3"
+  },
+  "dependencies": {
+    "express": "^4.19.2",
+    "pino": "^9.2.0",
+    "pino-http": "^10.2.0"
+  }
+}
