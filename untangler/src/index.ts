@@ -1,27 +1,23 @@
 import express from "express";
 import pino from "pino-http";
-import { setStaticData } from "./static/StaticData";
-import { login } from "./api/auth";
+import { setStaticData } from "./static/static_data";
+import { logger } from "./utils/logger";
+import { registerAuthEndpoints } from "./api/auth";
+import { registerTimelineEndpoints } from "./api/timeline";
 
-const logger = pino().logger;
 const app = express();
 app.use(pino());
+app.disable("x-powered-by");
 
-app.post("/login", async (req, res) => {
-  const response = await login(
-    req.query.id as string,
-    req.query.password as string
-  );
-
-  res.json(response);
-});
+registerAuthEndpoints(app);
+registerTimelineEndpoints(app);
 
 setStaticData()
-  .catch((e) => {
-    logger.error(e);
-    process.exit(1);
-  })
-  .then(() => {
-    app.listen(3000);
-    logger.info("server listening on port 3000");
-  });
+	.catch((e) => {
+		logger.error(e);
+		process.exit(1);
+	})
+	.then(() => {
+		app.listen(3000);
+		logger.info("server listening on port 3000");
+	});

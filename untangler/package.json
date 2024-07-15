@@ -5,7 +5,8 @@
   "scripts": {
     "start": "nodemon src/index.ts | pino-pretty",
     "format": "npx @biomejs/biome format --write ./src",
-    "build": "tsc"
+    "build": "tsc",
+    "prepare": "ts-patch install && typia patch"
   },
   "author": "nedoxff",
   "license": "MIT",
@@ -15,11 +16,13 @@
     "@types/node": "^20.14.10",
     "nodemon": "^3.1.4",
     "ts-node": "^10.9.2",
-    "typescript": "^5.5.3"
+    "ts-patch": "^3.2.1",
+    "typescript": "^5.5.2"
   },
   "dependencies": {
     "express": "^4.19.2",
     "pino": "^9.2.0",
-    "pino-http": "^10.2.0"
+    "pino-http": "^10.2.0",
+    "typia": "^6.5.1"
   }
 }
