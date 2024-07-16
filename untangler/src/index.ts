@@ -4,6 +4,7 @@ import { setStaticData } from "./static/static_data";
 import { logger } from "./utils/logger";
 import { registerAuthEndpoints } from "./api/auth";
 import { registerTimelineEndpoints } from "./api/timeline";
+import { registerUserEndpoints } from "./api/user";
 
 const app = express();
 app.use(pino());
@@ -11,6 +12,7 @@ app.disable("x-powered-by");
 
 registerAuthEndpoints(app);
 registerTimelineEndpoints(app);
+registerUserEndpoints(app);
 
 setStaticData()
 	.catch((e) => {

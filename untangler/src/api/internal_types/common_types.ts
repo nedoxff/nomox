@@ -45,7 +45,7 @@ export type RawUser = {
 	__typename: "User";
 	rest_id: string;
 	is_blue_verified: boolean;
-	profile_image_shape: string;
+	profile_image_shape?: string;
 	legacy: {
 		can_dm: boolean;
 		can_media_tag: boolean;
@@ -83,9 +83,9 @@ export type RawUser = {
 		url?: string;
 		verified: boolean;
 	};
-	super_follow_eligible: boolean;
-	super_followed_by: boolean;
+	super_follow_eligible?: boolean;
+	super_followed_by?: boolean;
 	super_folowing?: boolean;
-	private_super_following: boolean;
-	exclusive_tweet_following: boolean;
+	private_super_following?: boolean;
+	exclusive_tweet_following?: boolean;
 };

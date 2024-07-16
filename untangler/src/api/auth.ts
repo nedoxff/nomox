@@ -1,9 +1,5 @@
 import { staticData } from "../static/static_data";
-import type { LoginResult } from "./types/auth/login_result";
-import type {
-	FlowResponse,
-	LoginSuccessSubtask,
-} from "./internal_types/onboarding_types";
+import type { FlowResponse } from "./internal_types/onboarding_types";
 import { logger } from "../utils/logger";
 import type { Express } from "express";
 import {

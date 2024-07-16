@@ -69,7 +69,7 @@ export class LoginFlowMachine
 		const abort = await this.prepare();
 		if (abort) return;
 
-		await this.onboardingTask("welcome", "?flow_name=welcome", {
+		await this.performTask("welcome", "?flow_name=welcome", {
 			input_flow_data: {
 				country_code: null,
 				flow_context: {
@@ -82,7 +82,7 @@ export class LoginFlowMachine
 			},
 		});
 
-		this.task = await this.onboardingTask(
+		this.task = await this.performTask(
 			"login",
 			"?flow_name=login",
 			{
@@ -150,7 +150,7 @@ export class LoginFlowMachine
 	async processSubtask(subtask: FlowSubtask) {
 		switch (subtask.subtask_id) {
 			case "LoginEnterUserIdentifier": {
-				this.task = await this.onboardingTask("enter_text", "", {
+				this.task = await this.performTask("enter_text", "", {
 					subtask_inputs: [
 						{
 							enter_text: {
@@ -166,7 +166,7 @@ export class LoginFlowMachine
 				break;
 			}
 			case "LoginEnterPassword": {
-				this.task = await this.onboardingTask("enter_password", "", {
+				this.task = await this.performTask("enter_password", "", {
 					subtask_inputs: [
 						{
 							enter_password: {
@@ -180,7 +180,7 @@ export class LoginFlowMachine
 				break;
 			}
 			case "AccountDuplicationCheck": {
-				this.task = await this.onboardingTask("check_duplicate", undefined, {
+				this.task = await this.performTask("check_duplicate", undefined, {
 					subtask_inputs: [
 						{
 							check_logged_in_account: {
@@ -199,7 +199,7 @@ export class LoginFlowMachine
 		}
 	}
 
-	async onboardingTask(
+	async performTask(
 		name: string,
 		query?: string,
 		data?: Record<string, unknown>,

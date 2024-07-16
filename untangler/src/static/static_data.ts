@@ -58,16 +58,21 @@ async function readFiles() {
 	staticData.timelineFeatures = JSON.parse(
 		(await fs.readFile("src/static/timeline_features.json")).toString(),
 	);
+	staticData.userFeatures = JSON.parse(
+		(await fs.readFile("src/static/user_features.json")).toString(),
+	);
 }
 
 export type StaticData = {
 	authorizationToken: string;
 	onboardingVersions: Record<string, number>;
 	timelineFeatures: Record<string, boolean>;
+	userFeatures: Record<string, boolean>;
 };
 
 export const staticData: StaticData = {
 	authorizationToken: "",
 	onboardingVersions: {},
 	timelineFeatures: {},
+	userFeatures: {},
 };
