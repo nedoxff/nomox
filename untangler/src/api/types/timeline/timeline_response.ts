@@ -1,4 +1,4 @@
-import type { Tweet } from "./tweet";
+import type { Tweet } from "../tweet";
 
 export type TimelineResponse = {
 	tweets: Tweet[];

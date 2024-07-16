@@ -1,6 +1,6 @@
 import type { RawTweet } from "../internal_types/common_types";
 import typia from "typia";
-import type { TimelineResponse } from "../types/timeline_types";
+import type { TimelineResponse } from "../types/timeline/timeline_response";
 import { convertRawTweet } from "./common_processors";
 
 export function processRawTimelineData(
@@ -52,8 +52,8 @@ type FeedbackAction = {
 	key: string;
 	value: {
 		feedbackType: string;
-		prompt: string;
-		confirmation: string;
+		prompt?: string;
+		confirmation?: string;
 		hasUndoAction: boolean;
 		feedbackUrl?: string;
 	};
