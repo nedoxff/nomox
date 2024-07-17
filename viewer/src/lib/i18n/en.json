@@ -1,0 +1,12 @@
+{
+    "login": {
+        "noGraphic": "nomox does not yet have a pretty graphic for this section.",
+        "title": "welcome to nomox!",
+        "description": "nomox is an alternative way of viewing twitter, now known as X.",
+        "id": "id",
+        "idPlaceholder": "enter your username/email/phone number...",
+        "password": "password",
+        "passwordPlaceholder": "enter your password...",
+        "login": "login"
+    }
+}
