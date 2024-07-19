@@ -31,7 +31,7 @@ export default function NonEmptyTextField(props: NonEmptyTextFieldProps) {
 				type={props.type}
 				placeholder={props.placeholder}
 				required
-			></TextField>
+			/>
 		</TextFieldRoot>
 	);
 }

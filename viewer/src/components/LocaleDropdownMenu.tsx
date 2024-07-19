@@ -8,12 +8,12 @@ import {
 	DropdownMenuTrigger,
 } from "./ui/dropdown-menu";
 import { Button } from "./ui/button";
-import { DropdownMenuSubTriggerProps } from "@kobalte/core/dropdown-menu";
+import type { DropdownMenuSubTriggerProps } from "@kobalte/core/dropdown-menu";
 import { useI18nContext } from "../i18n/i18n-solid";
 import { i18nObject, loadedLocales } from "../i18n/i18n-util";
-import { Locales } from "../i18n/i18n-types";
+import type { Locales } from "../i18n/i18n-types";
 import { FaSolidChevronDown } from "solid-icons/fa";
-import { parse } from "@twemoji/parser";
+import Twemojify from "./Twemojify";
 
 export default function LocaleDropdownMenu() {
 	const [ready, setReady] = createSignal(false);
@@ -33,18 +33,18 @@ export default function LocaleDropdownMenu() {
 			<DropdownMenu placement="top">
 				<DropdownMenuTrigger
 					as={(props: DropdownMenuSubTriggerProps) => (
-						<Button {...props} variant="outline" class="gap-2">
-							<img src={parse(LL().flag())[0].url} width={16} /> {LL().name()}{" "}
+						<Button {...props} variant="outline" class="gap-2 items-center">
+							<Twemojify>{LL().flag()}</Twemojify> {LL().name()}{" "}
 							<FaSolidChevronDown />
 						</Button>
 					)}
-				></DropdownMenuTrigger>
+				/>
 				<DropdownMenuContent>
 					<DropdownMenuRadioGroup value={locale()} onChange={updateLocale}>
 						<For each={Object.keys(loadedLocales) as Array<Locales>}>
 							{(item) => (
 								<DropdownMenuRadioItem closeOnSelect value={item} class="gap-2">
-									<img src={parse(i18nObject(item).flag())[0].url} width={16} />{" "}
+									<Twemojify>{i18nObject(item).flag()}</Twemojify>{" "}
 									{i18nObject(item).name()}
 								</DropdownMenuRadioItem>
 							)}

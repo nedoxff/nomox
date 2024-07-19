@@ -4,7 +4,7 @@ import { useI18nContext } from "../../i18n/i18n-solid";
 import ThemeSwitchButton from "../../components/ThemeSwitchButton";
 import { createSignal, Show } from "solid-js";
 import NonEmptyTextField from "./NonEmptyTextField";
-import LoadingIndicator from "../../components/LoadingIndicator/LoadingIndicator";
+import LoadingIndicator from "../../components/loading_indicator/LoadingIndicator";
 import { login } from "../../api/auth";
 import { toast } from "solid-sonner";
 import { useNavigate } from "@solidjs/router";
@@ -45,7 +45,7 @@ export default function Login() {
 				</p>
 			</div>
 			<div class="col-span-1 flex flex-col p-10 justify-between">
-				<div></div>
+				<div />
 				<div>
 					<h1 class="text-5xl dark:text-light">{LL().login.title()}</h1>
 					<p class="text-xl dark:text-light mt-2">{LL().login.description()}</p>
@@ -91,6 +91,7 @@ export default function Login() {
 					<IoEllipse size={5} />
 					<a
 						target="_blank"
+						rel="noreferrer"
 						href="https://github.com/nedoxff/nomox"
 						class="hover:underline"
 					>

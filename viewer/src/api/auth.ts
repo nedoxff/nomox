@@ -1,5 +1,5 @@
 import typia from "typia";
-import { LoginResult } from "./types/auth/login_result";
+import type { LoginResult } from "./types/auth/login_result";
 
 export async function login(
 	id: string,

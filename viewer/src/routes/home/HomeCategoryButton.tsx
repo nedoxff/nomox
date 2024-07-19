@@ -1,4 +1,4 @@
-import { JSX, ParentProps } from "solid-js";
+import type { JSX, ParentProps } from "solid-js";
 import { Button } from "~/components/ui/button";
 
 export type HomeCategoryButtonProps = {
@@ -12,6 +12,7 @@ export default function HomeCategoryButton(props: HomeCategoryButtonProps) {
 		<Button
 			variant="ghost"
 			class="gap-5 rounded-full justify-start text-xl h-fit py-3 px-10"
+			onClick={() => props.onClick?.()}
 		>
 			{props.icon(props.selected, 36)}{" "}
 			<span class={props.selected ? "font-semibold" : "font-normal"}>

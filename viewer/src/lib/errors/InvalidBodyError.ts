@@ -1,4 +1,4 @@
-import typia from "typia";
+import type typia from "typia";
 
 export default class InvalidBodyError extends Error {
 	constructor(errors: typia.IValidation.IError[]) {

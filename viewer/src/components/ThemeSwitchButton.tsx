@@ -1,7 +1,7 @@
 import { createEffect, Match, Switch } from "solid-js";
 import { Button } from "./ui/button";
-import { setThemeStore, themeStore } from "../lib/stores/ThemeStore";
 import { FaSolidMoon, FaSolidSun } from "solid-icons/fa";
+import { setThemeStore, themeStore } from "~/lib/stores";
 
 export default function ThemeSwitchButton() {
 	const toggleTheme = () => {

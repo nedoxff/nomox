@@ -1,5 +1,5 @@
 import NotAuthorizedError from "~/lib/errors/NotAuthorizedError";
-import { TimelineResponse } from "./types/timeline/timeline_response";
+import type { TimelineResponse } from "./types/timeline/timeline_response";
 import typia from "typia";
 import InvalidBodyError from "~/lib/errors/InvalidBodyError";
 
