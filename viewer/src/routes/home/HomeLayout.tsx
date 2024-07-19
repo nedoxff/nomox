@@ -18,7 +18,6 @@ import {
 	IoSettingsOutline,
 } from "solid-icons/io";
 import HomeProfileButton from "./HomeProfileButton";
-import { currentUserStore } from "~/lib/stores";
 
 export default function HomeLayout(props: ParentProps) {
 	const navigate = useNavigate();

@@ -1,5 +1,4 @@
 import {
-	Tweet,
 	type TweetMedia,
 	TweetMediaType,
 	type TweetPhoto,
