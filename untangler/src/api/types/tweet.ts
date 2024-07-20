@@ -1,12 +1,22 @@
 import type { User } from "./user";
 
-export type Tweet = {
+export type Tweet = TweetBase &
+	(
+		| { type: "retweet" }
+		| ({
+				type: "full";
+		  } & TweetContent)
+	);
+
+export type TweetBase = {
 	id: string;
 	createdAt: string;
 	muted: boolean;
-	retweetOf: Tweet | null;
 	user: User;
+	retweetOf: Tweet | null;
+};
 
+export type TweetContent = {
 	stats: {
 		views: number | null;
 		retweets: number;
@@ -28,6 +38,7 @@ export type Tweet = {
 		liked: boolean;
 	};
 };
+
 export enum TweetMediaType {
 	Photo = 0,
 	Video = 1,

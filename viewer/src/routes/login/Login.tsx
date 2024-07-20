@@ -7,7 +7,7 @@ import NonEmptyTextField from "./NonEmptyTextField";
 import LoadingIndicator from "../../components/loading_indicator/LoadingIndicator";
 import { login } from "../../api/auth";
 import { toast } from "solid-sonner";
-import { useNavigate } from "@solidjs/router";
+import { A, useNavigate } from "@solidjs/router";
 import { IoEllipse } from "solid-icons/io";
 
 export default function Login() {
@@ -89,14 +89,14 @@ export default function Login() {
 					<IoEllipse size={5} />
 					<ThemeSwitchButton />
 					<IoEllipse size={5} />
-					<a
+					<A
 						target="_blank"
 						rel="noreferrer"
 						href="https://github.com/nedoxff/nomox"
 						class="hover:underline"
 					>
 						{LL().login.sourceCode()}
-					</a>
+					</A>
 				</div>
 			</div>
 		</div>

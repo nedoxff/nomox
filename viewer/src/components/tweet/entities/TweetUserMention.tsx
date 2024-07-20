@@ -6,6 +6,7 @@ import {
 	HoverCardTrigger,
 } from "~/components/ui/hover-card";
 import TweetUserPreview from "../previews/TweetUserPreview";
+import { A } from "@solidjs/router";
 
 export default function TweetUserMention(props: {
 	username: string;
@@ -16,13 +17,14 @@ export default function TweetUserMention(props: {
 	return (
 		<HoverCard gutter={10}>
 			<HoverCardTrigger>
-				<a
+				<A
+					replace={true}
 					class="text-brand hover:underline underline-offset-2 "
 					target="_self"
 					href={`/user/${props.username}`}
 				>
 					@{props.username}
-				</a>
+				</A>
 			</HoverCardTrigger>
 			<Show when={!user.loading && user() !== undefined}>
 				<HoverCardContent>

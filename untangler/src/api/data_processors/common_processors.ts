@@ -8,12 +8,13 @@ import {
 	TextEntity,
 	type TweetMedia,
 	UserMentionEntity,
-	type Tweet,
 	type TweetEntity,
 	TweetPhoto,
 	type TweetPhotoVariant,
 	TweetVideo,
 	type TweetVideoVariant,
+	type Tweet,
+	type TweetBase,
 } from "../types/tweet";
 import type { User } from "../types/user";
 import he from "he";
@@ -97,7 +98,7 @@ export function convertRawTweet(tweet: RawTweet | null): Tweet | null {
 		return null;
 	}
 
-	return {
+	const base: TweetBase = {
 		id: tweet.rest_id,
 		createdAt: tweet.legacy.created_at,
 		muted: tweet.conversation_muted,
@@ -106,6 +107,22 @@ export function convertRawTweet(tweet: RawTweet | null): Tweet | null {
 				tweet.quoted_status_result?.result ??
 				null,
 		),
+		user: convertRawUser(tweet.core.user_result.result),
+	};
+
+	if (
+		!tweet.legacy.is_quote_status &&
+		tweet.legacy.retweeted_status_result !== undefined
+	) {
+		return {
+			type: "retweet",
+			...base,
+		};
+	}
+
+	return {
+		...base,
+		type: "full",
 		user: convertRawUser(tweet.core.user_result.result),
 		stats: {
 			views:
@@ -223,6 +240,15 @@ function convertEntities(tweet: RawTweet): TweetEntity[] {
 
 			currentIndex = mention.indices[1];
 		}
+	}
+
+	if (currentIndex !== text.length - 1) {
+		result.push(
+			new TextEntity(
+				[currentIndex, text.length - 1],
+				text.substring(currentIndex),
+			),
+		);
 	}
 
 	return result;
