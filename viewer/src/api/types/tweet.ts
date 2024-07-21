@@ -1,3 +1,4 @@
+import type { FormattableText } from "./common";
 import type { User } from "./user";
 
 export type Tweet = TweetBase &
@@ -26,9 +27,7 @@ export type TweetContent = {
 		replies: number;
 	};
 
-	content: {
-		unformatted: string;
-		entities: TweetEntity[];
+	content: FormattableText & {
 		media: TweetMedia[];
 	};
 
@@ -145,11 +144,13 @@ export class HashtagEntity extends TweetEntity {
 }
 
 export class LinkEntity extends TweetEntity {
-	link: string;
+	url: string;
+	display: string;
 
-	constructor(_indices: number[], _link: string) {
+	constructor(_indices: number[], _url: string, _display: string) {
 		super(_indices, TweetEntityType.Link);
-		this.link = _link;
+		this.url = _url;
+		this.display = _display;
 	}
 }
 

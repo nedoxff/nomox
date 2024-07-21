@@ -10,17 +10,7 @@ export type RawTweet = {
 		conversation_id_str: string;
 		created_at: string;
 		display_text_range: number[];
-		entities: {
-			hashtags: {
-				indices: number[];
-				text: string;
-			}[];
-			user_mentions: {
-				id_str: string;
-				name: string;
-				screen_name: string;
-				indices: number[];
-			}[];
+		entities: RawTextEntities & {
 			media?: RawTweetMedia[];
 		};
 		extended_entities?: {
@@ -59,6 +49,25 @@ export type RawTweet = {
 	is_translatable: boolean;
 };
 
+export type RawTextEntities = {
+	hashtags: {
+		indices: number[];
+		text: string;
+	}[];
+	user_mentions: {
+		id_str: string;
+		name: string;
+		screen_name: string;
+		indices: number[];
+	}[];
+	urls: {
+		display_url: string;
+		expanded_url: string;
+		indices: number[];
+		url: string;
+	}[];
+};
+
 export type RawUser = {
 	__typename: "User";
 	rest_id: string;
@@ -74,7 +83,9 @@ export type RawUser = {
 		analytics_type: string;
 		created_at: string;
 		description: string;
-		// do entities later
+		entities: {
+			description: RawTextEntities;
+		};
 		fast_followers_count: number;
 		favourites_count: number;
 		followers_count: number;

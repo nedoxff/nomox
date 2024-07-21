@@ -1,16 +1,18 @@
 import {
+	type TweetEntity,
 	type TextEntity,
 	TweetEntityType,
-	type TweetEntity,
 	type UserMentionEntity,
 	type HashtagEntity,
+	type LinkEntity,
 } from "~/api/types/tweet";
-import TweetUserMention from "./entities/TweetUserMention";
-import Split from "../Split";
-import Twemojify from "../Twemojify";
-import TweetHastag from "./entities/TweetHashtag";
+import TweetUserMention from "../entities/TweetUserMention";
+import Split from "../../Split";
+import Twemojify from "../../Twemojify";
+import TweetHastag from "../entities/TweetHashtag";
+import TweetLink from "../entities/TweetLink";
 
-export default function TweetTextRenderer(props: { entities: TweetEntity[] }) {
+export default function FormattableText(props: { entities: TweetEntity[] }) {
 	return (
 		<div>
 			{props.entities.map((entity) => {
@@ -32,6 +34,10 @@ export default function TweetTextRenderer(props: { entities: TweetEntity[] }) {
 					case TweetEntityType.Hashtag: {
 						const hashtag = entity as HashtagEntity;
 						return <TweetHastag tag={hashtag.tag} />;
+					}
+					case TweetEntityType.Link: {
+						const link = entity as LinkEntity;
+						return <TweetLink link={link} />;
 					}
 				}
 			})}

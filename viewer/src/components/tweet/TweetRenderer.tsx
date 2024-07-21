@@ -1,20 +1,23 @@
 import type { Tweet } from "~/api/types/tweet";
-import ContentTweetRenderer from "./ContentTweetRenderer";
-import { IoRepeat, IoShare } from "solid-icons/io";
+import TimelineTweetRenderer from "./renderers/TimelineTweetRenderer";
+import { IoRepeat } from "solid-icons/io";
 import UserHoverable from "./UserHoverable";
 import { A } from "@solidjs/router";
 import Twemojify from "../Twemojify";
+import { useI18nContext } from "~/i18n/i18n-solid";
 
 export default function TweetRenderer(props: {
 	tweet: Tweet;
 }) {
+	const { LL } = useI18nContext();
+
 	if (props.tweet.type === "full") {
-		return <ContentTweetRenderer tweet={props.tweet} />;
+		return <TimelineTweetRenderer tweet={props.tweet} />;
 	}
 
 	if (props.tweet.retweetOf?.type === "full") {
 		return (
-			<ContentTweetRenderer
+			<TimelineTweetRenderer
 				tweet={props.tweet.retweetOf}
 				prepend={
 					<UserHoverable user={props.tweet.user}>
@@ -29,7 +32,7 @@ export default function TweetRenderer(props: {
 									{props.tweet.user.profile.displayName} (@
 									{props.tweet.user.profile.username})
 								</span>{" "}
-								<span class="font-light">retweeted</span>
+								<span class="font-light">{LL().tweet.retweeted()}</span>
 							</Twemojify>
 						</A>
 					</UserHoverable>

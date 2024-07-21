@@ -1,30 +1,46 @@
-import TweetTextRenderer from "./TweetTextRenderer";
-import UserAvatar from "./UserAvatar";
+import FormattableText from "./FormattableText";
+import UserAvatar from "../UserAvatar";
 import { type JSX, Show } from "solid-js";
-import Twemojify from "../Twemojify";
+import Twemojify from "../../Twemojify";
 import TweetMediaRenderer from "./TweetMediaRenderer";
-import TweetEngagementButton from "./TweetEngagementButton";
+import TweetEngagementButton from "../TweetEngagementButton";
 import {
 	IoBookmark,
 	IoBookmarkOutline,
 	IoChatbubble,
 	IoChatbubbleOutline,
+	IoCopy,
+	IoCopyOutline,
+	IoEllipsisHorizontal,
 	IoHeart,
 	IoHeartOutline,
+	IoOpen,
+	IoOpenOutline,
 	IoRepeat,
 	IoRepeatOutline,
 	IoStatsChart,
 } from "solid-icons/io";
 import type { Tweet } from "~/api/types/tweet";
-import UserHoverable from "./UserHoverable";
+import UserHoverable from "../UserHoverable";
 import { A } from "@solidjs/router";
+import {
+	Popover,
+	PopoverContent,
+	PopoverTrigger,
+} from "~/components/ui/popover";
+import { Button } from "~/components/ui/button";
+import { useI18nContext } from "~/i18n/i18n-solid";
 
 export type ContentTweetRendererProps = {
 	tweet: Tweet & { type: "full" };
 	prepend?: JSX.Element;
 };
 
-export default function ContentTweetRenderer(props: ContentTweetRendererProps) {
+export default function TimelineTweetRenderer(
+	props: ContentTweetRendererProps,
+) {
+	const { LL } = useI18nContext();
+
 	return (
 		<div class="border-border border-b-0 border-[1px] p-4 flex flex-col transition-all hover:bg-accent">
 			{props.prepend}
@@ -41,24 +57,49 @@ export default function ContentTweetRenderer(props: ContentTweetRendererProps) {
 					</UserHoverable>
 				</div>
 				<div class="col-span-1 row-span-1 flex flex-row items-center">
-					<UserHoverable user={props.tweet.user}>
-						<p class="flex flex-row items-center">
-							<A
-								replace={true}
-								class="hover:underline"
-								href={`/user/${props.tweet.user.profile.username}`}
+					<div class="flex flex-row justify-between w-full">
+						<UserHoverable user={props.tweet.user}>
+							<p class="flex flex-row items-center">
+								<A
+									replace={true}
+									class="hover:underline"
+									href={`/user/${props.tweet.user.profile.username}`}
+								>
+									<Twemojify>{props.tweet.user.profile.displayName}</Twemojify>
+								</A>
+								<span class="ml-1 text-muted-foreground text-sm">
+									@{props.tweet.user.profile.username}
+								</span>
+							</p>
+						</UserHoverable>
+						<Popover>
+							<PopoverTrigger>
+								<IoEllipsisHorizontal size={18} />
+							</PopoverTrigger>
+							<PopoverContent
+								showCloseButton={false}
+								as="div"
+								class="flex flex-col p-0 w-fit"
 							>
-								<Twemojify>{props.tweet.user.profile.displayName}</Twemojify>
-							</A>
-							<span class="ml-1 text-muted-foreground text-sm">
-								@{props.tweet.user.profile.username}
-							</span>
-						</p>
-					</UserHoverable>
+								<Button
+									variant="ghost"
+									class="w-full rounded-none flex flex-row gap-3"
+									onClick={() =>
+										window.open(
+											`https://x.com/${props.tweet.user.profile.username}/status/${props.tweet.id}`,
+										)
+									}
+								>
+									<IoOpenOutline size={18} />
+									{LL().tweet.actions.seeOriginal()}
+								</Button>
+							</PopoverContent>
+						</Popover>
+					</div>
 				</div>
 				<div class="col-span-1 row-span-1 break-words flex flex-col gap-2">
 					<Show when={props.tweet.content.entities.length !== 0}>
-						<TweetTextRenderer entities={props.tweet.content.entities} />
+						<FormattableText entities={props.tweet.content.entities} />
 					</Show>
 					<TweetMediaRenderer media={props.tweet.content.media} />
 				</div>
@@ -78,8 +119,8 @@ export default function ContentTweetRenderer(props: ContentTweetRendererProps) {
 							{props.tweet.stats.replies}
 						</TweetEngagementButton>
 						<TweetEngagementButton
-							class="hover:text-brand"
-							selected={false}
+							class="hover:text-retweet-green"
+							selected={props.tweet.personal.retweeted}
 							icon={(s) =>
 								s ? <IoRepeat size={18} /> : <IoRepeatOutline size={18} />
 							}
@@ -87,8 +128,8 @@ export default function ContentTweetRenderer(props: ContentTweetRendererProps) {
 							{props.tweet.stats.retweets}
 						</TweetEngagementButton>
 						<TweetEngagementButton
-							class="hover:text-brand"
-							selected={false}
+							class="hover:text-like-red"
+							selected={props.tweet.personal.liked}
 							icon={(s) =>
 								s ? <IoHeart size={18} /> : <IoHeartOutline size={18} />
 							}
@@ -97,7 +138,7 @@ export default function ContentTweetRenderer(props: ContentTweetRendererProps) {
 						</TweetEngagementButton>
 						<TweetEngagementButton
 							class="hover:text-brand"
-							selected={false}
+							selected={props.tweet.personal.bookmarked}
 							icon={(s) =>
 								s ? <IoBookmark size={18} /> : <IoBookmarkOutline size={18} />
 							}

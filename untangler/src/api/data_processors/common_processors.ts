@@ -1,4 +1,5 @@
 import type {
+	RawTextEntities,
 	RawTweet,
 	RawTweetMedia,
 	RawUser,
@@ -15,6 +16,7 @@ import {
 	type TweetVideoVariant,
 	type Tweet,
 	type TweetBase,
+	LinkEntity,
 } from "../types/tweet";
 import type { User } from "../types/user";
 import he from "he";
@@ -115,8 +117,8 @@ export function convertRawTweet(tweet: RawTweet | null): Tweet | null {
 		tweet.legacy.retweeted_status_result !== undefined
 	) {
 		return {
-			type: "retweet",
 			...base,
+			type: "retweet",
 		};
 	}
 
@@ -137,7 +139,7 @@ export function convertRawTweet(tweet: RawTweet | null): Tweet | null {
 		},
 		content: {
 			unformatted: tweet.legacy.full_text,
-			entities: convertEntities(tweet),
+			entities: convertEntities(tweet.legacy.full_text, tweet.legacy.entities),
 			media: (
 				tweet.legacy.extended_entities?.media ??
 				tweet.legacy.entities.media ??
@@ -161,7 +163,16 @@ export function convertRawUser(user: RawUser): User {
 		profile: {
 			username: user.legacy.screen_name,
 			displayName: user.legacy.name,
-			description: nullIfEmpty(user.legacy.description),
+			description:
+				user.legacy.description === ""
+					? null
+					: {
+							unformatted: user.legacy.description,
+							entities: convertEntities(
+								user.legacy.description,
+								user.legacy.entities.description,
+							),
+						},
 			location: nullIfEmpty(user.legacy.location),
 			bannerUrl: nullIfEmpty(user.legacy.profile_banner_url),
 			imageUrl: nullIfEmpty(user.legacy.profile_image_url_https),
@@ -183,17 +194,22 @@ export function convertRawUser(user: RawUser): User {
 	};
 }
 
-function convertEntities(tweet: RawTweet): TweetEntity[] {
+function convertEntities(
+	unformatted: string,
+	entities: RawTextEntities,
+): TweetEntity[] {
 	const regex = /https?:\/\/t\.co\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)/g;
-	const text = he.decode(tweet.legacy.full_text.replace(regex, "").trim());
+	const text = he.decode(unformatted.replace(regex, "").trim());
 
-	const hashtags = tweet.legacy.entities.hashtags;
-	const mentions = tweet.legacy.entities.user_mentions;
+	const hashtags = entities.hashtags;
+	const mentions = entities.user_mentions;
+	const urls = entities.urls;
 
 	const startIndices = [
 		...hashtags.map((entity) => entity.indices[0]),
 		...mentions.map((entity) => entity.indices[0]),
-	];
+		...urls.map((entity) => entity.indices[0]),
+	].sort((a, b) => a - b);
 
 	if (startIndices.length === 0) {
 		return [new TextEntity([0, text.length], text)];
@@ -220,7 +236,6 @@ function convertEntities(tweet: RawTweet): TweetEntity[] {
 			}
 
 			result.push(new HashtagEntity(hashtag.indices, hashtag.text));
-
 			currentIndex = hashtag.indices[1];
 		}
 
@@ -237,12 +252,23 @@ function convertEntities(tweet: RawTweet): TweetEntity[] {
 					mention.screen_name,
 				),
 			);
-
 			currentIndex = mention.indices[1];
+		}
+
+		if (urls.some((entity) => entity.indices[0] === index)) {
+			const link = urls.find((entity) => entity.indices[0] === index);
+			if (link === undefined) {
+				continue;
+			}
+
+			result.push(
+				new LinkEntity(link.indices, link.expanded_url, link.display_url),
+			);
+			currentIndex = link.indices[1];
 		}
 	}
 
-	if (currentIndex !== text.length - 1) {
+	if (currentIndex < text.length - 1) {
 		result.push(
 			new TextEntity(
 				[currentIndex, text.length - 1],

@@ -1,7 +1,8 @@
 {
   "name": "nomox-untangler",
   "version": "1.0.0",
-  "description": "",
+  "private": "true",
+  "description": "a simple interface for accessing twitter's internal APIs.",
   "scripts": {
     "start": "nodemon src/index.ts | pino-pretty",
     "format": "npx @biomejs/biome format --write ./src",
@@ -10,7 +11,7 @@
     "copy-types": "npx copyfiles -u 3 \"./src/api/types/**/*.ts\" \"../viewer/src/api/types\""
   },
   "author": "nedoxff",
-  "license": "MIT",
+  "license": "AGPL-3.0-only",
   "devDependencies": {
     "@biomejs/biome": "1.8.3",
     "@types/cors": "^2.8.17",

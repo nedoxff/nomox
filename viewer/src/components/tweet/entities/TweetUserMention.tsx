@@ -12,7 +12,7 @@ export default function TweetUserMention(props: {
 	username: string;
 	id: string;
 }) {
-	const [user] = createResource(() => getUserPreview(props.id));
+	const [user] = createResource(() => getUserPreview(props.username));
 
 	return (
 		<HoverCard gutter={10}>

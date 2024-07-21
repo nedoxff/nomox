@@ -1,3 +1,5 @@
+import type { FormattableText } from "./common";
+
 export type User = {
 	id: string;
 	verified: boolean;
@@ -6,7 +8,7 @@ export type User = {
 	profile: {
 		username: string;
 		displayName: string;
-		description: string | null;
+		description: FormattableText | null;
 		location: string | null;
 		bannerUrl: string | null;
 		imageUrl: string | null;

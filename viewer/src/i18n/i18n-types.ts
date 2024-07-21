@@ -33,7 +33,7 @@ type RootTranslation = {
 		 */
 		title: string;
 		/**
-		 * n​o​m​o​x​ ​i​s​ ​a​n​ ​a​l​t​e​r​n​a​t​i​v​e​ ​w​a​y​ ​o​f​ ​v​i​e​w​i​n​g​ ​t​w​i​t​t​e​r​,​ ​n​o​w​ ​k​n​o​w​n​ ​a​s​ ​X​.
+		 * n​o​m​o​x​ ​i​s​ ​a​n​ ​a​l​t​e​r​n​a​t​i​v​e​ ​f​r​o​n​t​e​n​d​ ​f​o​r​ ​t​w​i​t​t​e​r​,​ ​n​o​w​ ​k​n​o​w​n​ ​a​s​ ​X​.
 		 */
 		description: string;
 		/**
@@ -65,6 +65,72 @@ type RootTranslation = {
 		 */
 		sourceCode: string;
 	};
+	main: {
+		tabs: {
+			/**
+			 * h​o​m​e
+			 */
+			home: string;
+			/**
+			 * e​x​p​l​o​r​e
+			 */
+			explore: string;
+			/**
+			 * n​o​t​i​f​i​c​a​t​i​o​n​s
+			 */
+			notifications: string;
+			/**
+			 * m​e​s​s​a​g​e​s
+			 */
+			messages: string;
+			/**
+			 * b​o​o​k​m​a​r​k​s
+			 */
+			bookmarks: string;
+			/**
+			 * p​r​o​f​i​l​e
+			 */
+			profile: string;
+			/**
+			 * s​e​t​t​i​n​g​s
+			 */
+			settings: string;
+		};
+	};
+	tweet: {
+		actions: {
+			/**
+			 * o​p​e​n​ ​t​w​e​e​t​ ​i​n​ ​X
+			 */
+			seeOriginal: string;
+			/**
+			 * c​o​p​y
+			 */
+			copy: string;
+			/**
+			 * s​a​v​e
+			 */
+			save: string;
+		};
+		/**
+		 * r​e​t​w​e​e​t​e​d
+		 */
+		retweeted: string;
+	};
+	user: {
+		/**
+		 * f​o​l​l​o​w
+		 */
+		follow: string;
+		/**
+		 * f​o​l​l​o​w​e​r​s
+		 */
+		followers: string;
+		/**
+		 * f​o​l​l​o​w​i​n​g
+		 */
+		following: string;
+	};
 };
 
 export type TranslationFunctions = {
@@ -86,7 +152,7 @@ export type TranslationFunctions = {
 		 */
 		title: () => LocalizedString;
 		/**
-		 * nomox is an alternative way of viewing twitter, now known as X.
+		 * nomox is an alternative frontend for twitter, now known as X.
 		 */
 		description: () => LocalizedString;
 		/**
@@ -117,6 +183,72 @@ export type TranslationFunctions = {
 		 * source code
 		 */
 		sourceCode: () => LocalizedString;
+	};
+	main: {
+		tabs: {
+			/**
+			 * home
+			 */
+			home: () => LocalizedString;
+			/**
+			 * explore
+			 */
+			explore: () => LocalizedString;
+			/**
+			 * notifications
+			 */
+			notifications: () => LocalizedString;
+			/**
+			 * messages
+			 */
+			messages: () => LocalizedString;
+			/**
+			 * bookmarks
+			 */
+			bookmarks: () => LocalizedString;
+			/**
+			 * profile
+			 */
+			profile: () => LocalizedString;
+			/**
+			 * settings
+			 */
+			settings: () => LocalizedString;
+		};
+	};
+	tweet: {
+		actions: {
+			/**
+			 * open tweet in X
+			 */
+			seeOriginal: () => LocalizedString;
+			/**
+			 * copy
+			 */
+			copy: () => LocalizedString;
+			/**
+			 * save
+			 */
+			save: () => LocalizedString;
+		};
+		/**
+		 * retweeted
+		 */
+		retweeted: () => LocalizedString;
+	};
+	user: {
+		/**
+		 * follow
+		 */
+		follow: () => LocalizedString;
+		/**
+		 * followers
+		 */
+		followers: () => LocalizedString;
+		/**
+		 * following
+		 */
+		following: () => LocalizedString;
 	};
 };
 

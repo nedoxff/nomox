@@ -25,8 +25,6 @@ export async function getHomeTimeline(): Promise<TimelineResponse> {
 		);
 	}
 
-	// TODO: https://github.com/samchon/typia/issues/1166
-	/*
 	const deserialized = typia.json.validateParse<TimelineResponse>(
 		await response.text(),
 	);
@@ -34,7 +32,5 @@ export async function getHomeTimeline(): Promise<TimelineResponse> {
 		throw new InvalidBodyError(deserialized.errors);
 	}
 
-	return deserialized.data;*/
-
-	return JSON.parse(await response.text()) as TimelineResponse;
+	return deserialized.data;
 }

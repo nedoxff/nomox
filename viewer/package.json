@@ -1,10 +1,13 @@
 {
-  "name": "viewer",
+  "name": "nomox-viewer",
+  "description": "a lightweight frontend for nomox.",
   "private": true,
   "version": "0.0.0",
   "type": "module",
+  "author": "nedoxff",
+  "license": "AGPL-3.0-only",
   "scripts": {
-    "dev": "vite",
+    "dev": "vite -- --https",
     "build": "tsc -b && vite build",
     "preview": "vite preview",
     "typesafe-i18n": "typesafe-i18n",
@@ -16,6 +19,7 @@
     "@solidjs/router": "^0.14.1",
     "@twemoji/api": "^15.1.0",
     "@twemoji/parser": "^15.1.1",
+    "@vitejs/plugin-basic-ssl": "^1.1.0",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.1",
     "he": "^1.2.0",
@@ -39,7 +43,7 @@
     "ts-patch": "^3.2.1",
     "typescript": "^5.5.2",
     "vite": "^5.3.4",
-    "vite-bundle-analyzer": "^0.10.3",
+    "vite-plugin-mkcert": "^1.17.5",
     "vite-plugin-solid": "^2.10.2"
   }
 }

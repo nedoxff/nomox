@@ -18,8 +18,10 @@ import {
 	IoSettingsOutline,
 } from "solid-icons/io";
 import HomeProfileButton from "./HomeProfileButton";
+import { useI18nContext } from "~/i18n/i18n-solid";
 
 export default function HomeLayout(props: ParentProps) {
+	const { LL } = useI18nContext();
 	const navigate = useNavigate();
 	const location = useLocation();
 
@@ -47,7 +49,7 @@ export default function HomeLayout(props: ParentProps) {
 								}
 								selected={location.pathname === "/home"}
 							>
-								Home
+								{LL().main.tabs.home()}
 							</HomeCategoryButton>
 							<HomeCategoryButton
 								icon={(selected, size) =>
@@ -59,7 +61,7 @@ export default function HomeLayout(props: ParentProps) {
 								}
 								selected={location.pathname === "/explore"}
 							>
-								Explore
+								{LL().main.tabs.explore()}
 							</HomeCategoryButton>
 							<HomeCategoryButton
 								icon={(selected, size) =>
@@ -71,7 +73,7 @@ export default function HomeLayout(props: ParentProps) {
 								}
 								selected={location.pathname === "/notifications"}
 							>
-								Notifications
+								{LL().main.tabs.notifications()}
 							</HomeCategoryButton>
 							<HomeCategoryButton
 								icon={(selected, size) =>
@@ -83,7 +85,7 @@ export default function HomeLayout(props: ParentProps) {
 								}
 								selected={location.pathname === "/messages"}
 							>
-								Messages
+								{LL().main.tabs.messages()}
 							</HomeCategoryButton>
 							<HomeCategoryButton
 								icon={(selected, size) =>
@@ -95,7 +97,7 @@ export default function HomeLayout(props: ParentProps) {
 								}
 								selected={location.pathname === "/bookmarks"}
 							>
-								Bookmarks
+								{LL().main.tabs.bookmarks()}
 							</HomeCategoryButton>
 							<HomeCategoryButton
 								icon={(selected, size) =>
@@ -107,7 +109,7 @@ export default function HomeLayout(props: ParentProps) {
 								}
 								selected={location.pathname === "/profile"}
 							>
-								Profile
+								{LL().main.tabs.profile()}
 							</HomeCategoryButton>
 							<HomeCategoryButton
 								icon={(selected, size) =>
@@ -119,7 +121,7 @@ export default function HomeLayout(props: ParentProps) {
 								}
 								selected={location.pathname === "/settings"}
 							>
-								Settings
+								{LL().main.tabs.settings()}
 							</HomeCategoryButton>
 						</div>
 						<HomeProfileButton />

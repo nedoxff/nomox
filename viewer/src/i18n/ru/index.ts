@@ -5,18 +5,44 @@ const ru = {
 	flag: "🇷🇺",
 
 	login: {
-		noGraphic: "nomox does not yet have a fancy graphic for this section.",
+		noGraphic:
+			"на данный момент у nomox нет красивой картинки для этой секции.",
 		title: "добро пожаловать в nomox!",
-		description:
-			"nomox is an alternative way of viewing twitter, now known as X.",
+		description: "nomox — альтернативный фронтэнд для твиттера (сейчас X).",
 		loginInstructions:
-			"to login, use the same credentials you would use to login into twitter.",
-		id: "id",
-		idPlaceholder: "enter your username/email/phone number...",
-		password: "password",
-		passwordPlaceholder: "enter your password...",
-		login: "login",
-		sourceCode: "source code",
+			"чтобы войти, используйте те же данные, которые вы бы использовали для входа в твиттер.",
+		id: "индентификатор",
+		idPlaceholder: "введите ваше имя пользователя/почту/номер телефона...",
+		password: "пароль",
+		passwordPlaceholder: "введите ваш пароль...",
+		login: "войти",
+		sourceCode: "исходный код",
+	},
+
+	main: {
+		tabs: {
+			home: "главная",
+			explore: "обзор",
+			notifications: "уведомления",
+			messages: "сообщения",
+			bookmarks: "заметки",
+			profile: "профиль",
+			settings: "настройки",
+		},
+	},
+
+	tweet: {
+		actions: {
+			seeOriginal: "открыть твит в X",
+			copy: "копировать",
+			save: "сохранить",
+		},
+		retweeted: "ретвитнул",
+	},
+	user: {
+		follow: "читать",
+		followers: "читателей",
+		following: "в читаемых",
 	},
 } satisfies Translation;
 

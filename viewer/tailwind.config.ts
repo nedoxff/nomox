@@ -17,6 +17,9 @@ const config: Config = {
     extend: {
       colors: {
         brand: '#009df7',
+        "retweet-green": '#00ba7c',
+        "like-red": '#f91880',
+
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
         ring: "hsl(var(--ring))",
