@@ -31,8 +31,6 @@ export async function authorizedFetch(
 	const queryString =
 		query === undefined ? "" : `?${querystring.stringify(query)}`;
 
-	console.log(headers, url + queryString, body);
-
 	return await fetch(url + queryString, {
 		method: method,
 		headers: headers,

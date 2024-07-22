@@ -1,5 +1,5 @@
 import type { User } from "~/api/types/user";
-import UserAvatar from "../UserAvatar";
+import UserAvatar from "../helpers/UserAvatar";
 import { Button } from "~/components/ui/button";
 import { Show } from "solid-js";
 import { IoEllipse } from "solid-icons/io";
@@ -23,7 +23,7 @@ export default function TweetUserPreview(props: { user: User }) {
 				@{props.user.profile.username}
 			</p>
 			<Show when={props.user.profile.description !== null}>
-				<p class="my-2 max-w-72 break-all">
+				<p class="my-2 max-w-72 break-word">
 					<FormattableText
 						// biome-ignore lint/style/noNonNullAssertion: <explanation>
 						entities={props.user.profile.description!.entities}

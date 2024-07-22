@@ -18,11 +18,6 @@ export function processRawTimelineData(
 	const result: TimelineResponse = { tweets: [], cursors: {} };
 
 	for (const entry of rawEntries) {
-		const errors = typia.validate<TimelineTweet>(entry);
-		if (errors.errors) {
-			console.log(errors.errors);
-		}
-
 		if (typia.is<TimelineCursor>(entry)) {
 			const cursor = entry as TimelineCursor;
 			result.cursors[cursor.cursorType.toLocaleLowerCase()] = cursor.value;

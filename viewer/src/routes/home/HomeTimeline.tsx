@@ -1,7 +1,7 @@
 import { createResource, For, Show } from "solid-js";
 import { getHomeTimeline } from "~/api/timeline";
 import LoadingIndicator from "~/components/loading_indicator/LoadingIndicator";
-import TweetRenderer from "~/components/tweet/TweetRenderer";
+import TimelineTweet from "~/components/tweet/TimelineTweet";
 
 export default function HomeTimeline() {
 	const [timeline] = createResource(getHomeTimeline);
@@ -16,7 +16,7 @@ export default function HomeTimeline() {
 			}
 		>
 			<For each={timeline()?.tweets}>
-				{(item) => <TweetRenderer tweet={item} />}
+				{(item) => <TimelineTweet tweet={item} />}
 			</For>
 		</Show>
 	);

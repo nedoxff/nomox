@@ -1,3 +1,4 @@
+import * as runes from "runes2";
 import type {
 	RawTextEntities,
 	RawTweet,
@@ -199,7 +200,8 @@ function convertEntities(
 	entities: RawTextEntities,
 ): TweetEntity[] {
 	const regex = /https?:\/\/t\.co\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)/g;
-	const text = he.decode(unformatted.replace(regex, "").trim());
+	const text = he.decode(unformatted.replace(regex, ""));
+	const length = runes.runes(text).length;
 
 	const hashtags = entities.hashtags;
 	const mentions = entities.user_mentions;
@@ -212,7 +214,7 @@ function convertEntities(
 	].sort((a, b) => a - b);
 
 	if (startIndices.length === 0) {
-		return [new TextEntity([0, text.length], text)];
+		return [new TextEntity([0, length], text)];
 	}
 
 	const result = [];
@@ -225,7 +227,11 @@ function convertEntities(
 		}
 
 		if (index !== 0) {
-			const regularText = text.substring(currentIndex, index);
+			const regularText = runes.substring(
+				text,
+				currentIndex,
+				index - currentIndex,
+			);
 			result.push(new TextEntity([currentIndex, index], regularText));
 		}
 
@@ -268,11 +274,11 @@ function convertEntities(
 		}
 	}
 
-	if (currentIndex < text.length - 1) {
+	if (currentIndex < length - 1) {
 		result.push(
 			new TextEntity(
-				[currentIndex, text.length - 1],
-				text.substring(currentIndex),
+				[currentIndex, length - 1],
+				runes.substring(text, currentIndex),
 			),
 		);
 	}

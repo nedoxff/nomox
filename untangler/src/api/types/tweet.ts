@@ -39,8 +39,8 @@ export type TweetContent = {
 };
 
 export enum TweetMediaType {
-	Photo = 0,
-	Video = 1,
+	Photo = "photo",
+	Video = "video",
 }
 
 export abstract class TweetMedia {
@@ -107,10 +107,10 @@ export type TweetPhotoVariant = {
 };
 
 export enum TweetEntityType {
-	Text = 0,
-	UserMention = 1,
-	Hashtag = 2,
-	Link = 3,
+	Text = "text",
+	UserMention = "mention",
+	Hashtag = "hashtag",
+	Link = "link",
 }
 
 export abstract class TweetEntity {

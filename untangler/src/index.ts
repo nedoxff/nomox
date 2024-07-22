@@ -8,7 +8,7 @@ import { registerTimelineEndpoints } from "./api/timeline";
 import { registerUserEndpoints } from "./api/user";
 
 const app = express();
-app.use(pino());
+//app.use(pino());
 app.use(cors());
 app.disable("x-powered-by");
 

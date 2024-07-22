@@ -4,14 +4,14 @@ import {
 	HoverCard,
 	HoverCardTrigger,
 	HoverCardContent,
-} from "../ui/hover-card";
-import TweetUserPreview from "./previews/TweetUserPreview";
+} from "../../ui/hover-card";
+import TweetUserPreview from "../previews/TweetUserPreview";
 
 export default function UserHoverable(props: { user: User } & ParentProps) {
 	return (
 		<HoverCard gutter={10}>
 			<HoverCardTrigger class="w-fit">{props.children}</HoverCardTrigger>
-			<HoverCardContent>
+			<HoverCardContent class="w-fit">
 				<TweetUserPreview user={props.user} />
 			</HoverCardContent>
 		</HoverCard>
