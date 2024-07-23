@@ -62,7 +62,7 @@ export function TweetHeaderRow(props: {
 				>
 					<A
 						replace={true}
-						class="hover:underline"
+						class="hover:underline font-semibold"
 						href={`/user/${tweet.user.profile.username}`}
 					>
 						<Twemojify>{tweet.user.profile.displayName}</Twemojify>

@@ -96,7 +96,7 @@ export type TweetMediaOriginalSize = {
 
 export type TweetVideoVariant = {
 	contentType: string;
-	bitrate: number;
+	bitrate: number | null;
 	url: string;
 };
 

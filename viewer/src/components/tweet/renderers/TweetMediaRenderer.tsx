@@ -3,6 +3,7 @@ import {
 	type TweetMedia,
 	TweetMediaType,
 	type TweetPhoto,
+	type TweetVideo,
 } from "~/api/types/tweet";
 import {
 	ContextMenu,
@@ -14,6 +15,7 @@ import {
 	ContextMenuTrigger,
 } from "~/components/ui/context-menu";
 import { useI18nContext } from "~/i18n/i18n-solid";
+import TweetVideoRenderer from "./TweetVideoRenderer";
 
 export default function TweetMediaRenderer(props: { media: TweetMedia[] }) {
 	const { LL } = useI18nContext();
@@ -69,7 +71,7 @@ export default function TweetMediaRenderer(props: { media: TweetMedia[] }) {
 				);
 			}
 			case TweetMediaType.Video: {
-				return <></>;
+				return <TweetVideoRenderer video={media as TweetVideo} />;
 			}
 			default: {
 				return <></>;

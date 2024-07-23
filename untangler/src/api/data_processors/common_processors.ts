@@ -69,11 +69,10 @@ const convertMedia = (media: RawTweetMedia): TweetMedia => {
 				);
 			}
 
-			const variants: TweetVideoVariant[] = media.video_info.variants
-				.filter((variant) => variant.bitrate !== undefined)
-				.map<TweetVideoVariant>((variant) => ({
+			const variants: TweetVideoVariant[] =
+				media.video_info.variants.map<TweetVideoVariant>((variant) => ({
 					contentType: variant.content_type,
-					bitrate: variant.bitrate ?? -1,
+					bitrate: variant.bitrate ?? null,
 					url: variant.url,
 				}));
 			return new TweetVideo(
@@ -138,15 +137,31 @@ export function convertRawTweet(tweet: RawTweet | null): Tweet | null {
 			likes: tweet.legacy.favorite_count,
 			replies: tweet.legacy.reply_count,
 		},
-		content: {
-			unformatted: tweet.legacy.full_text,
-			entities: convertEntities(tweet.legacy.full_text, tweet.legacy.entities),
-			media: (
-				tweet.legacy.extended_entities?.media ??
-				tweet.legacy.entities.media ??
-				[]
-			).map(convertMedia),
-		},
+		content: tweet.note_tweet?.is_expandable
+			? {
+					unformatted: tweet.note_tweet.note_tweet_results.result.text,
+					entities: convertEntities(
+						tweet.note_tweet.note_tweet_results.result.text,
+						tweet.note_tweet.note_tweet_results.result.entity_set,
+					),
+					media: (
+						tweet.legacy.extended_entities?.media ??
+						tweet.legacy.entities.media ??
+						[]
+					).map(convertMedia),
+				}
+			: {
+					unformatted: tweet.legacy.full_text,
+					entities: convertEntities(
+						tweet.legacy.full_text,
+						tweet.legacy.entities,
+					),
+					media: (
+						tweet.legacy.extended_entities?.media ??
+						tweet.legacy.entities.media ??
+						[]
+					).map(convertMedia),
+				},
 		personal: {
 			retweeted: tweet.legacy.retweeted,
 			bookmarked: tweet.legacy.bookmarked,

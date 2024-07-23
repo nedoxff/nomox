@@ -34,6 +34,17 @@ export type RawTweet = {
 			result: RawTweet;
 		};
 	};
+	note_tweet?: {
+		is_expandable: boolean;
+		note_tweet_results: {
+			result: {
+				id: string;
+				text: string;
+				entity_set: RawTextEntities;
+				// TODO: richtext and media
+			};
+		};
+	};
 	core: {
 		user_result: {
 			result: RawUser;

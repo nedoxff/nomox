@@ -16,6 +16,7 @@
   },
   "dependencies": {
     "@kobalte/core": "^0.13.3",
+    "@solid-primitives/intersection-observer": "^2.1.6",
     "@solidjs/router": "^0.14.1",
     "@twemoji/api": "^15.1.0",
     "@twemoji/parser": "^15.1.1",
@@ -23,6 +24,7 @@
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.1",
     "he": "^1.2.0",
+    "hls.js": "^1.5.13",
     "overlayscrollbars-solid": "^0.5.5",
     "solid-icons": "^1.1.0",
     "solid-js": "^1.8.18",
