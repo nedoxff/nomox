@@ -20,6 +20,7 @@ import { setThemeStore } from "./lib/stores";
 import UserProfile from "./routes/home/user/UserProfile";
 
 const Login = lazy(() => import("./routes/login/Login"));
+const Playground = lazy(() => import("./routes/playground/Playground"));
 const HomeLayout = lazy(() => import("./routes/home/HomeLayout"));
 const HomeTimeline = lazy(() => import("./routes/home/HomeTimeline"));
 
@@ -59,6 +60,7 @@ if (app === null) {
 					<OverlayScrollbarsComponent defer>
 						<Router>
 							<Route path="/login" component={Login} />
+							<Route path="playground" component={Playground} />
 							<Route path="/" component={HomeLayout}>
 								<Route
 									path="/"

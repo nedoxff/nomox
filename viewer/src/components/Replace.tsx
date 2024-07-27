@@ -1,6 +1,6 @@
 import type { JSX } from "solid-js";
 
-export default function Split(props: {
+export default function Replace(props: {
 	text: string;
 	by: RegExp;
 	replacement: JSX.Element;

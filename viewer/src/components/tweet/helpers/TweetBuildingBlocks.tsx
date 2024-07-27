@@ -38,7 +38,7 @@ export function TweetUserAvatar() {
 				href={`/user/${tweet.user.profile.username}`}
 				class="hover:underline"
 			>
-				<UserAvatar user={tweet.user} />
+				<UserAvatar quality="thumbnail" user={tweet.user} />
 			</A>
 		</UserHoverable>
 	);

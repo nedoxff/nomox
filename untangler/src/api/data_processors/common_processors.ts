@@ -60,6 +60,7 @@ const convertMedia = (media: RawTweetMedia): TweetMedia => {
 					aspectRatio: largestVariant.w / largestVariant.h,
 				},
 				variants,
+				realId,
 			);
 		}
 		case "video": {
@@ -191,7 +192,17 @@ export function convertRawUser(user: RawUser): User {
 						},
 			location: nullIfEmpty(user.legacy.location),
 			bannerUrl: nullIfEmpty(user.legacy.profile_banner_url),
-			imageUrl: nullIfEmpty(user.legacy.profile_image_url_https),
+			image:
+				user.legacy.profile_image_url_https === "" ||
+				user.legacy.profile_image_url_https === undefined
+					? null
+					: {
+							thumbnail: user.legacy.profile_image_url_https,
+							best: user.legacy.profile_image_url_https.replaceAll(
+								"_normal.jpg",
+								".jpg",
+							),
+						},
 			preferences: {
 				backgroundColor: user.legacy.profile_background_color,
 				linkColor: user.legacy.profile_link_color,

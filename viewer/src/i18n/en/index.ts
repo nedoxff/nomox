@@ -29,16 +29,34 @@ const en = {
 			profile: "profile",
 			settings: "settings",
 		},
+		info: {
+			projectDescription:
+				"nomox is open-source software licensed under AGPL-3.0. if you wish to contribute, you can check the project at [GITHUB].",
+			version: "version",
+		},
 	},
 
 	tweet: {
 		actions: {
 			seeOriginal: "open tweet in X",
-			copy: "copy",
-			save: "save",
+			copy: {
+				title: "copy",
+				link: "link",
+				image: "image",
+				success:
+					"successfully copied the {what|{image: image, link: link}} to clipboard",
+				error:
+					"failed to copy the {what|{image: image, link: link}} to clipboard",
+			},
+			save: {
+				title: "save",
+				success: "successfully saved the image",
+				error: "failed to save the image",
+			},
 		},
 		retweeted: "retweeted",
 	},
+
 	user: {
 		follow: "follow",
 		followers: "followers",

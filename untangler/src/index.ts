@@ -6,6 +6,7 @@ import { logger } from "./utils/logger";
 import { registerAuthEndpoints } from "./api/auth";
 import { registerTimelineEndpoints } from "./api/timeline";
 import { registerUserEndpoints } from "./api/user";
+import { registerTweetEndpoints } from "./api/tweet";
 
 const app = express();
 //app.use(pino());
@@ -15,6 +16,7 @@ app.disable("x-powered-by");
 registerAuthEndpoints(app);
 registerTimelineEndpoints(app);
 registerUserEndpoints(app);
+registerTweetEndpoints(app);
 
 setStaticData()
 	.catch((e) => {

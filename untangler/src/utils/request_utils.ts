@@ -24,9 +24,7 @@ export async function authorizedFetch(
 		// biome-ignore lint/style/noParameterAssign: it's not confusing here
 		headers = { Authorization: authorizationHeader };
 	}
-	if (contentType !== undefined) {
-		Object.assign(headers, { "Content-Type": contentType });
-	}
+	Object.assign(headers, { "Content-Type": contentType ?? "application/json" });
 
 	const queryString =
 		query === undefined ? "" : `?${querystring.stringify(query)}`;

@@ -1,12 +1,14 @@
 import { createResource, Show } from "solid-js";
 import { getSelf } from "~/api/user";
 import LoadingIndicator from "~/components/loading_indicator/LoadingIndicator";
+import UserAvatar from "~/components/tweet/helpers/UserAvatar";
 import { Button } from "~/components/ui/button";
 import {
 	Popover,
 	PopoverContent,
 	PopoverTrigger,
 } from "~/components/ui/popover";
+import { ensuredDefined } from "~/lib/utils";
 
 export default function HomeProfileButton() {
 	const [user] = createResource(getSelf);
@@ -26,10 +28,10 @@ export default function HomeProfileButton() {
 						variant="ghost"
 						class="gap-5 w-full rounded-full justify-start text-xl h-min py-2 px-10"
 					>
-						<img
-							class="w-9 rounded-full"
-							src={user()?.profile.imageUrl ?? ""}
-							alt="your profile"
+						<UserAvatar
+							user={ensuredDefined(user(), "self user does not exist")}
+							class="w-9"
+							quality="thumbnail"
 						/>
 						<div class="flex flex-col items-start">
 							<p class="text-base">{user()?.profile.displayName}</p>

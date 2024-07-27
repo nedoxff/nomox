@@ -71,21 +71,18 @@ export type OauthAuthorization = {
 
 export function getAuthorization(
 	encoded: string | undefined,
-	reject: (message: string) => void,
-): OauthAuthorization | undefined {
+): OauthAuthorization | Error {
 	if (encoded === undefined) {
-		reject("no authorization header sent");
-		return undefined;
+		return new Error("no authorization header sent");
 	}
 	const decoded = Buffer.from(encoded.replace("Basic ", ""), "base64")
 		.toString("utf-8")
 		.split(":");
 
 	if (decoded.length !== 2 || decoded[0] === "" || decoded[1] === "") {
-		reject(
+		return new Error(
 			'expected the authorization header to be a basic token ("oauth_token:oauth_secret" in base64)',
 		);
-		return undefined;
 	}
 
 	return {

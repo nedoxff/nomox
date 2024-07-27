@@ -28,10 +28,9 @@ export function registerTimelineEndpoints(server: Express) {
 			>,
 			res,
 		) => {
-			const auth = getAuthorization(req.headers.authorization, (err) =>
-				res.status(401).end(err),
-			);
-			if (auth === undefined) {
+			const auth = getAuthorization(req.headers.authorization);
+			if (auth instanceof Error) {
+				res.status(401).end(auth.message);
 				return;
 			}
 

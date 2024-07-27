@@ -11,7 +11,10 @@ export type User = {
 		description: FormattableText | null;
 		location: string | null;
 		bannerUrl: string | null;
-		imageUrl: string | null;
+		image: {
+			thumbnail: string;
+			best: string;
+		} | null;
 		preferences: {
 			backgroundColor: string | null;
 			linkColor: string | null;

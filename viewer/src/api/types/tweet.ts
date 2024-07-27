@@ -61,14 +61,17 @@ export abstract class TweetMedia {
 
 export class TweetPhoto extends TweetMedia {
 	variants: Record<string, TweetPhotoVariant>;
+	cdnId: string;
 
 	constructor(
 		_id: string,
 		_size: TweetMediaOriginalSize,
 		_variants: Record<string, TweetPhotoVariant>,
+		_cdnId: string,
 	) {
 		super(TweetMediaType.Photo, _id, _size);
 		this.variants = _variants;
+		this.cdnId = _cdnId;
 	}
 }
 

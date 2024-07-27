@@ -19,6 +19,10 @@ import {
 } from "solid-icons/io";
 import HomeProfileButton from "./HomeProfileButton";
 import { useI18nContext } from "~/i18n/i18n-solid";
+import { Card, CardContent, CardHeader, CardTitle } from "~/components/ui/card";
+import Replace from "~/components/Replace";
+import TweetLink from "~/components/tweet/entities/TweetLink";
+import { TweetEntityType } from "~/api/types/tweet";
 
 export default function HomeLayout(props: ParentProps) {
 	const { LL } = useI18nContext();
@@ -128,7 +132,28 @@ export default function HomeLayout(props: ParentProps) {
 					</div>
 				</div>
 				<div class="col-span-2">{props.children}</div>
-				<div class="col-span-1"> </div>
+				<div class="col-span-1">
+					<div class="sticky self-start p-5 pr-0 top-0 h-dvh">
+						<Card>
+							<CardContent class="py-4">
+								<Replace
+									text={LL().main.info.projectDescription()}
+									by={/(\[GITHUB\])/gi}
+									replacement={
+										<a
+											class="text-brand hover:underline"
+											target="_blank"
+											rel="noreferrer"
+											href="https://github.com/nedoxff/nomox"
+										>
+											github
+										</a>
+									}
+								/>
+							</CardContent>
+						</Card>
+					</div>
+				</div>
 			</div>
 		</div>
 	);

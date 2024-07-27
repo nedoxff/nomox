@@ -21,10 +21,9 @@ const GET_USER_BY_NAME_ENDPOINT =
 
 export function registerUserEndpoints(server: Express) {
 	server.get("/user/:criteria/:id?", async (req, res) => {
-		const auth = getAuthorization(req.headers.authorization, (err) =>
-			res.status(401).end(err),
-		);
-		if (auth === undefined) {
+		const auth = getAuthorization(req.headers.authorization);
+		if (auth instanceof Error) {
+			res.status(401).end(auth.message);
 			return;
 		}
 
@@ -134,17 +133,10 @@ async function getById(
 		rest_id: id,
 	};
 
-	const response = await authorizedFetch(
-		"GET",
-		GET_USER_BY_ID_ENDPOINT,
-		auth,
-		{
-			variables: JSON.stringify(variables),
-			features: JSON.stringify(staticData.userFeatures),
-		},
-		undefined,
-		undefined,
-	);
+	const response = await authorizedFetch("GET", GET_USER_BY_ID_ENDPOINT, auth, {
+		variables: JSON.stringify(variables),
+		features: JSON.stringify(staticData.userFeatures),
+	});
 
 	await processRawUserResponse(response, respond);
 }
@@ -177,8 +169,6 @@ async function getByName(
 			variables: JSON.stringify(variables),
 			features: JSON.stringify(staticData.userFeatures),
 		},
-		undefined,
-		undefined,
 	);
 
 	await processRawUserResponse(response, respond);

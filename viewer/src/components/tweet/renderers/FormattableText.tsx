@@ -7,7 +7,7 @@ import {
 	type LinkEntity,
 } from "~/api/types/tweet";
 import TweetUserMention from "../entities/TweetUserMention";
-import Split from "../../Split";
+import Replace from "../../Replace";
 import Twemojify from "../../Twemojify";
 import TweetHastag from "../entities/TweetHashtag";
 import TweetLink from "../entities/TweetLink";
@@ -21,7 +21,7 @@ export default function FormattableText(props: { entities: TweetEntity[] }) {
 						const rawText = (entity as TextEntity).text;
 						return (
 							<Twemojify>
-								<Split text={rawText} by={/(\n)/gi} replacement={<br />} />
+								<Replace text={rawText} by={/(\n)/gi} replacement={<br />} />
 							</Twemojify>
 						);
 					}

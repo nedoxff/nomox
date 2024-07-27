@@ -13,7 +13,7 @@ export default function TweetUserPreview(props: { user: User }) {
 	return (
 		<div class="flex flex-col">
 			<div class="flex flex-row justify-between items-center">
-				<UserAvatar class="w-16" user={props.user} />
+				<UserAvatar quality="best" class="w-16" user={props.user} />
 				<Button>{LL().user.follow()}</Button>
 			</div>
 			<p class="mt-2 font-semibold text-lg">
