@@ -199,8 +199,8 @@ export function convertRawUser(user: RawUser): User {
 					: {
 							thumbnail: user.legacy.profile_image_url_https,
 							best: user.legacy.profile_image_url_https.replaceAll(
-								"_normal.jpg",
-								".jpg",
+								"_normal.",
+								".",
 							),
 						},
 			preferences: {

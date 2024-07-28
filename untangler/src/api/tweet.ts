@@ -36,7 +36,7 @@ export function registerTweetEndpoints(server: Express) {
 			return;
 		}
 
-		await genericTweetAction(auth, LIKE_TWEET_ENDPOINT, req.params.id, res);
+		await genericTweetAction(auth, UNLIKE_TWEET_ENDPOINT, req.params.id, res);
 	});
 
 	server.put("/tweet/:id/bookmark", async (req, res) => {

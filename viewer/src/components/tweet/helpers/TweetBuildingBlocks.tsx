@@ -1,6 +1,6 @@
 import { A } from "@solidjs/router";
 import UserHoverable from "./UserHoverable";
-import { Show, useContext } from "solid-js";
+import { createSignal, Show, useContext } from "solid-js";
 import { TweetContext } from "~/lib/contexts";
 import UserAvatar from "./UserAvatar";
 import {
@@ -23,6 +23,13 @@ import { Button } from "../../ui/button";
 import TweetEngagementButton from "./TweetEngagementButton";
 import FormattableText from "../renderers/FormattableText";
 import TweetMedia from "../renderers/TweetMediaRenderer";
+import {
+	bookmarkTweet,
+	likeTweet,
+	unbookmarkTweet,
+	unlikeTweet,
+} from "~/api/tweet";
+import { toast } from "solid-sonner";
 
 export function TweetUserAvatar() {
 	const tweet = useContext(TweetContext);
@@ -44,9 +51,7 @@ export function TweetUserAvatar() {
 	);
 }
 
-export function TweetHeaderRow(props: {
-	layout: "row" | "col";
-}) {
+export function TweetHeaderRow(props: { layout: "row" | "col" }) {
 	const { LL } = useI18nContext();
 	const tweet = useContext(TweetContext);
 
@@ -58,7 +63,9 @@ export function TweetHeaderRow(props: {
 		<div class="flex flex-row justify-between w-full">
 			<UserHoverable user={tweet.user}>
 				<p
-					class={`flex flex-${props.layout} items-${props.layout === "row" ? "center" : "start"}`}
+					class={`flex flex-${props.layout} items-${
+						props.layout === "row" ? "center" : "start"
+					}`}
 				>
 					<A
 						replace={true}
@@ -100,6 +107,7 @@ export function TweetHeaderRow(props: {
 }
 
 export function TweetEngagementButtonsRow() {
+	const { LL } = useI18nContext();
 	const tweet = useContext(TweetContext);
 
 	if (tweet === undefined) {
@@ -112,6 +120,38 @@ export function TweetEngagementButtonsRow() {
 			"a complete Tweet (type == full) is required to render the TweetEngagementButtonsRow",
 		);
 	}
+
+	const [liked, setLiked] = createSignal(tweet.personal.liked);
+	const [bookmarked, setBookmarked] = createSignal(tweet.personal.bookmarked);
+	const [retweeted, setRetweeted] = createSignal(tweet.personal.retweeted);
+
+	const like = () => {
+		(liked() ? unlikeTweet(tweet.id) : likeTweet(tweet.id))
+			.then(() => {
+				setLiked(!liked());
+			})
+			.catch(() => {
+				toast.error(
+					LL().tweet.actions.engagement.likeFailed({
+						action: liked() ? "unlike" : "like",
+					}),
+				);
+			});
+	};
+
+	const bookmark = () => {
+		(bookmarked() ? unbookmarkTweet(tweet.id) : bookmarkTweet(tweet.id))
+			.then(() => {
+				setBookmarked(!bookmarked());
+			})
+			.catch(() => {
+				toast.error(
+					LL().tweet.actions.engagement.bookmarkFailed({
+						action: bookmarked() ? "unbookmark" : "bookmark",
+					}),
+				);
+			});
+	};
 
 	return (
 		<div class="flex flex-row justify-between w-full">
@@ -127,7 +167,7 @@ export function TweetEngagementButtonsRow() {
 				</TweetEngagementButton>
 				<TweetEngagementButton
 					class="hover:text-retweet-green"
-					selected={tweet.personal.retweeted}
+					selected={retweeted()}
 					icon={(s) =>
 						s ? <IoRepeat size={18} /> : <IoRepeatOutline size={18} />
 					}
@@ -136,7 +176,8 @@ export function TweetEngagementButtonsRow() {
 				</TweetEngagementButton>
 				<TweetEngagementButton
 					class="hover:text-like-red"
-					selected={tweet.personal.liked}
+					selected={liked()}
+					onClick={like}
 					icon={(s) =>
 						s ? <IoHeart size={18} /> : <IoHeartOutline size={18} />
 					}
@@ -145,7 +186,8 @@ export function TweetEngagementButtonsRow() {
 				</TweetEngagementButton>
 				<TweetEngagementButton
 					class="hover:text-brand"
-					selected={tweet.personal.bookmarked}
+					selected={bookmarked()}
+					onClick={bookmark}
 					icon={(s) =>
 						s ? <IoBookmark size={18} /> : <IoBookmarkOutline size={18} />
 					}
@@ -163,9 +205,7 @@ export function TweetEngagementButtonsRow() {
 	);
 }
 
-export function TweetContent(props: {
-	class?: string;
-}) {
+export function TweetContent(props: { class?: string }) {
 	const tweet = useContext(TweetContext);
 
 	if (tweet === undefined) {

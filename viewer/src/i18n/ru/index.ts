@@ -53,6 +53,14 @@ const ru = {
 				success: "изображение успешно сохранено",
 				error: "не удалось сохранить изображение",
 			},
+			engagement: {
+				likeFailed:
+					"не удалось {action|{like: лайкнуть этот твит, unlike: убрать лайк с этого твита}}",
+				bookmarkFailed:
+					"не удалось {action|{bookmark: добавить этот твит в закладки, unbookmark: удалить этот твит из закладок}}",
+				retweetFailed:
+					"не удалось {action|{retweet: ретвитнуть этот твит, unretweet: удалить ретвит этого твита}}",
+			},
 		},
 		retweeted: "ретвитнул",
 	},
