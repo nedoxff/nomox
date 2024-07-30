@@ -55,8 +55,8 @@ async function readFiles() {
 	staticData.onboardingVersions = JSON.parse(
 		(await fs.readFile("src/static/onboarding_versions.json")).toString(),
 	);
-	staticData.timelineFeatures = JSON.parse(
-		(await fs.readFile("src/static/timeline_features.json")).toString(),
+	staticData.tweetFeatures = JSON.parse(
+		(await fs.readFile("src/static/tweet_features.json")).toString(),
 	);
 	staticData.userFeatures = JSON.parse(
 		(await fs.readFile("src/static/user_features.json")).toString(),
@@ -66,13 +66,16 @@ async function readFiles() {
 export type StaticData = {
 	authorizationToken: string;
 	onboardingVersions: Record<string, number>;
-	timelineFeatures: Record<string, boolean>;
+	tweetFeatures: {
+		timeline: Record<string, boolean>;
+		personal: Record<string, boolean>;
+	};
 	userFeatures: Record<string, boolean>;
 };
 
 export const staticData: StaticData = {
 	authorizationToken: "",
 	onboardingVersions: {},
-	timelineFeatures: {},
+	tweetFeatures: { personal: {}, timeline: {} },
 	userFeatures: {},
 };

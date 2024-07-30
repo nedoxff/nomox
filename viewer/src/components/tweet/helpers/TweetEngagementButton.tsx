@@ -11,6 +11,7 @@ export default function TweetEngagementButton(
 ) {
 	return (
 		<button
+			data-done={props.selected}
 			type="button"
 			class={`transition-all text-muted-foreground items-center flex flex-row gap-1 ${props.class}`}
 			onClick={props.onClick}

@@ -60,6 +60,10 @@ const en = {
 					"failed to {action|{bookmark: bookmark this tweet, unbookmark: remove this tweet from bookmarks}}",
 				retweetFailed:
 					"failed to {action|{retweet: retweet this tweet, unretweet: unretweet this tweet}}",
+
+				retweet: "retweet",
+				unretweet: "unretweet",
+				quote: "quote",
 			},
 		},
 		retweeted: "retweeted",

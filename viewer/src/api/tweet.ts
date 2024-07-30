@@ -1,97 +1,29 @@
-import NotAuthorizedError from "~/lib/errors/NotAuthorizedError";
+import { advancedFetch } from "~/lib/utils/request_utils";
 
 export async function likeTweet(id: string): Promise<void> {
-	if (localStorage.getItem("auth") === null) {
-		throw new NotAuthorizedError();
-	}
-
-	const response = await fetch(
-		`${import.meta.env.VITE_API_BASE}/tweet/${id}/like`,
-		{
-			method: "PUT",
-			headers: {
-				Authorization: localStorage.getItem("auth") ?? "",
-			},
-		},
-	);
-
-	if (!response.ok) {
-		throw new Error(
-			`couldn't like a tweet (status code ${
-				response.status
-			}): ${await response.text()}`,
-		);
-	}
+	return await advancedFetch("like a tweet", `tweet/${id}/like`, "PUT");
 }
 
 export async function unlikeTweet(id: string): Promise<void> {
-	if (localStorage.getItem("auth") === null) {
-		throw new NotAuthorizedError();
-	}
-
-	const response = await fetch(
-		`${import.meta.env.VITE_API_BASE}/tweet/${id}/unlike`,
-		{
-			method: "PUT",
-			headers: {
-				Authorization: localStorage.getItem("auth") ?? "",
-			},
-		},
-	);
-
-	if (!response.ok) {
-		throw new Error(
-			`couldn't unlike a tweet (status code ${
-				response.status
-			}): ${await response.text()}`,
-		);
-	}
+	return await advancedFetch("unlike a tweet", `tweet/${id}/unlike`, "PUT");
 }
 
 export async function bookmarkTweet(id: string): Promise<void> {
-	if (localStorage.getItem("auth") === null) {
-		throw new NotAuthorizedError();
-	}
-
-	const response = await fetch(
-		`${import.meta.env.VITE_API_BASE}/tweet/${id}/bookmark`,
-		{
-			method: "PUT",
-			headers: {
-				Authorization: localStorage.getItem("auth") ?? "",
-			},
-		},
-	);
-
-	if (!response.ok) {
-		throw new Error(
-			`couldn't bookmark a tweet (status code ${
-				response.status
-			}): ${await response.text()}`,
-		);
-	}
+	return await advancedFetch("bookmark a tweet", `tweet/${id}/bookmark`, "PUT");
 }
 
 export async function unbookmarkTweet(id: string): Promise<void> {
-	if (localStorage.getItem("auth") === null) {
-		throw new NotAuthorizedError();
-	}
+	return await advancedFetch("like a tweet", `tweet/${id}/unbookmark`, "PUT");
+}
 
-	const response = await fetch(
-		`${import.meta.env.VITE_API_BASE}/tweet/${id}/unbookmark`,
-		{
-			method: "PUT",
-			headers: {
-				Authorization: localStorage.getItem("auth") ?? "",
-			},
-		},
+export async function retweetTweet(id: string): Promise<void> {
+	return await advancedFetch("retweet a tweet", `tweet/${id}/retweet`, "PUT");
+}
+
+export async function unretweetTweet(id: string): Promise<void> {
+	return await advancedFetch(
+		"unretweet a tweet",
+		`tweet/${id}/unretweet`,
+		"PUT",
 	);
-
-	if (!response.ok) {
-		throw new Error(
-			`couldn't unbookmark a tweet (status code ${
-				response.status
-			}): ${await response.text()}`,
-		);
-	}
 }

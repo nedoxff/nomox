@@ -8,6 +8,7 @@ import {
 	IoBookmarkOutline,
 	IoChatbubble,
 	IoChatbubbleOutline,
+	IoChatbubblesOutline,
 	IoEllipsisHorizontal,
 	IoHeart,
 	IoHeartOutline,
@@ -26,10 +27,18 @@ import TweetMedia from "../renderers/TweetMediaRenderer";
 import {
 	bookmarkTweet,
 	likeTweet,
+	retweetTweet,
 	unbookmarkTweet,
 	unlikeTweet,
+	unretweetTweet,
 } from "~/api/tweet";
 import { toast } from "solid-sonner";
+import {
+	DropdownMenu,
+	DropdownMenuContent,
+	DropdownMenuItem,
+	DropdownMenuTrigger,
+} from "~/components/ui/dropdown-menu";
 
 export function TweetUserAvatar() {
 	const tweet = useContext(TweetContext);
@@ -125,6 +134,18 @@ export function TweetEngagementButtonsRow() {
 	const [bookmarked, setBookmarked] = createSignal(tweet.personal.bookmarked);
 	const [retweeted, setRetweeted] = createSignal(tweet.personal.retweeted);
 
+	const retweet = () => {
+		(retweeted() ? unretweetTweet(tweet.id) : retweetTweet(tweet.id))
+			.then(() => setRetweeted(!retweeted()))
+			.catch(() => {
+				toast.error(
+					LL().tweet.actions.engagement.retweetFailed({
+						action: retweeted() ? "unretweet" : "retweet",
+					}),
+				);
+			});
+	};
+
 	const like = () => {
 		(liked() ? unlikeTweet(tweet.id) : likeTweet(tweet.id))
 			.then(() => {
@@ -165,34 +186,62 @@ export function TweetEngagementButtonsRow() {
 				>
 					{tweet.stats.replies}
 				</TweetEngagementButton>
+				<DropdownMenu>
+					<DropdownMenuTrigger>
+						<TweetEngagementButton
+							class="hover:text-retweet-green data-[done=true]:text-retweet-green"
+							selected={retweeted()}
+							icon={(s) =>
+								s ? <IoRepeat size={18} /> : <IoRepeatOutline size={18} />
+							}
+						>
+							{tweet.stats.retweets + (retweeted() ? 1 : 0)}
+						</TweetEngagementButton>
+					</DropdownMenuTrigger>
+					<DropdownMenuContent as="div">
+						<DropdownMenuItem
+							closeOnSelect={true}
+							class="flex flex-row justify-start gap-3"
+							onSelect={retweet}
+						>
+							<IoRepeatOutline size={18} />
+							{retweeted()
+								? LL().tweet.actions.engagement.unretweet()
+								: LL().tweet.actions.engagement.retweet()}
+						</DropdownMenuItem>
+
+						<DropdownMenuItem
+							closeOnSelect={true}
+							class="flex flex-row justify-start gap-3"
+							onSelect={() => {
+								//TODO: implement quotes when tweeting is done
+								alert("quoting tweets is not possible yet!");
+							}}
+						>
+							<IoChatbubblesOutline size={18} />
+							{LL().tweet.actions.engagement.quote()}
+						</DropdownMenuItem>
+					</DropdownMenuContent>
+				</DropdownMenu>
 				<TweetEngagementButton
-					class="hover:text-retweet-green"
-					selected={retweeted()}
-					icon={(s) =>
-						s ? <IoRepeat size={18} /> : <IoRepeatOutline size={18} />
-					}
-				>
-					{tweet.stats.retweets}
-				</TweetEngagementButton>
-				<TweetEngagementButton
-					class="hover:text-like-red"
+					class="hover:text-like-red data-[done=true]:text-like-red"
 					selected={liked()}
 					onClick={like}
 					icon={(s) =>
 						s ? <IoHeart size={18} /> : <IoHeartOutline size={18} />
 					}
 				>
-					{tweet.stats.likes}
+					{tweet.stats.likes + (liked() ? 1 : 0)}
 				</TweetEngagementButton>
 				<TweetEngagementButton
-					class="hover:text-brand"
+					class="hover:text-brand data-[done=true]:text-brand"
 					selected={bookmarked()}
 					onClick={bookmark}
 					icon={(s) =>
 						s ? <IoBookmark size={18} /> : <IoBookmarkOutline size={18} />
 					}
 				>
-					{tweet.stats.replies}
+					{tweet.stats.bookmarks + (bookmarked() ? 1 : 0)}
 				</TweetEngagementButton>
 			</div>
 			<div class="flex flex-row">

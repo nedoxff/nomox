@@ -19,10 +19,8 @@ import {
 } from "solid-icons/io";
 import HomeProfileButton from "./HomeProfileButton";
 import { useI18nContext } from "~/i18n/i18n-solid";
-import { Card, CardContent, CardHeader, CardTitle } from "~/components/ui/card";
+import { Card, CardContent } from "~/components/ui/card";
 import Replace from "~/components/Replace";
-import TweetLink from "~/components/tweet/entities/TweetLink";
-import { TweetEntityType } from "~/api/types/tweet";
 
 export default function HomeLayout(props: ParentProps) {
 	const { LL } = useI18nContext();

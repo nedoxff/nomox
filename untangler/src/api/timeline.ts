@@ -7,6 +7,8 @@ import { authorizedFetch } from "../utils/request_utils";
 import { staticData } from "../static/static_data";
 import { processRawTimelineData } from "./data_processors/timeline_data_processor";
 import typia from "typia";
+import { requireAuth } from "../middleware/auth";
+import { matchedData, query } from "express-validator";
 
 const GET_HOME_TIMELINE_ENDPOINT =
 	"https://api.twitter.com/graphql/P5hqTTDzolV37XXZuM62oQ/HomeTimeline";
@@ -14,31 +16,18 @@ const GET_HOME_TIMELINE_ENDPOINT =
 export function registerTimelineEndpoints(server: Express) {
 	server.get(
 		"/timeline/home",
-		async (
-			req: Request<
-				unknown,
-				unknown,
-				unknown,
-				{
-					cursor: string | undefined;
-					count: number | undefined;
-					initial: string | undefined;
-					seen: string | undefined;
-				}
-			>,
-			res,
-		) => {
-			const auth = getAuthorization(req.headers.authorization);
-			if (auth instanceof Error) {
-				res.status(401).end(auth.message);
-				return;
-			}
+		requireAuth,
+		query("cursor").default(""),
+		query("count").default(20),
+		query("seen").default(""),
+		async (req: Request, res) => {
+			const result = matchedData(req);
 
 			const response = await getHomeTimeline(
-				auth,
-				req.query.cursor ?? "",
-				req.query.count ?? 20,
-				req.query.seen ?? "",
+				getAuthorization(req),
+				result.cursor,
+				result.count,
+				result.seen,
 			);
 
 			if (!response.ok) {
@@ -72,6 +61,8 @@ async function getHomeTimeline(
 		autoplay_enabled: true,
 		includeTweetImpression: true,
 	};
+	const features = staticData.tweetFeatures.timeline;
+	Object.assign(features, staticData.tweetFeatures.personal);
 
 	return await authorizedFetch(
 		"POST",
@@ -80,7 +71,7 @@ async function getHomeTimeline(
 		undefined,
 		JSON.stringify({
 			variables: JSON.stringify(variables),
-			features: JSON.stringify(staticData.timelineFeatures),
+			features: JSON.stringify(features),
 		}),
 		undefined,
 		"application/json",

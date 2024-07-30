@@ -27,6 +27,7 @@
   "dependencies": {
     "cors": "^2.8.5",
     "express": "^4.19.2",
+    "express-validator": "^7.1.0",
     "he": "^1.2.0",
     "pino": "^9.2.0",
     "pino-http": "^10.2.0",

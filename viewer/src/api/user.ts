@@ -1,93 +1,34 @@
-import NotAuthorizedError from "~/lib/errors/NotAuthorizedError";
 import type { User } from "./types/user";
 import typia from "typia";
-import InvalidBodyError from "~/lib/errors/InvalidBodyError";
+import { advancedFetchWithResult } from "~/lib/utils/request_utils";
+
+const userValidator = typia.json.createValidateParse<User>();
 
 export async function getSelf(): Promise<User> {
-	if (localStorage.getItem("auth") === null) {
-		throw new NotAuthorizedError();
-	}
-
-	const response = await fetch(`${import.meta.env.VITE_API_BASE}/user/self`, {
-		method: "GET",
-		headers: {
-			Authorization: localStorage.getItem("auth") ?? "",
-		},
-	});
-	if (!response.ok) {
-		throw new Error(
-			`couldn't fetch self (status code ${
-				response.status
-			}): ${await response.text()}`,
-		);
-	}
-
-	const deserialized = typia.json.validateParse<User>(await response.text());
-	if (!deserialized.success) {
-		throw new InvalidBodyError(deserialized.errors);
-	}
-
-	return deserialized.data;
+	return await advancedFetchWithResult(
+		"get self",
+		userValidator,
+		"user/self",
+		"GET",
+	);
 }
 
 export async function getUserByName(name: string): Promise<User> {
-	if (localStorage.getItem("auth") === null) {
-		throw new NotAuthorizedError();
-	}
-
-	const response = await fetch(
-		`${import.meta.env.VITE_API_BASE}/user/name/${name}`,
-		{
-			method: "GET",
-			headers: {
-				Authorization: localStorage.getItem("auth") ?? "",
-			},
-		},
+	return await advancedFetchWithResult(
+		"get a user by name",
+		userValidator,
+		`user/name/${name}`,
+		"GET",
 	);
-	if (!response.ok) {
-		throw new Error(
-			`couldn't fetch user by name (status code ${
-				response.status
-			}): ${await response.text()}`,
-		);
-	}
-
-	const deserialized = typia.json.validateParse<User>(await response.text());
-	if (!deserialized.success) {
-		throw new InvalidBodyError(deserialized.errors);
-	}
-
-	return deserialized.data;
 }
 
 export async function getUserById(id: string): Promise<User> {
-	if (localStorage.getItem("auth") === null) {
-		throw new NotAuthorizedError();
-	}
-
-	const response = await fetch(
-		`${import.meta.env.VITE_API_BASE}/user/id/${id}`,
-		{
-			method: "GET",
-			headers: {
-				Authorization: localStorage.getItem("auth") ?? "",
-			},
-		},
+	return await advancedFetchWithResult(
+		"get a user by id",
+		userValidator,
+		`user/id/${id}`,
+		"GET",
 	);
-	if (!response.ok) {
-		throw new Error(
-			`couldn't fetch user by id (status code ${
-				response.status
-			}): ${await response.text()}`,
-		);
-	}
-
-	const deserialized = typia.json.validateParse<User>(await response.text());
-	if (!deserialized.success) {
-		throw new InvalidBodyError(deserialized.errors);
-	}
-
-	return deserialized.data;
 }
 
 const userPreviewCache: Map<string, User> = new Map<string, User>();

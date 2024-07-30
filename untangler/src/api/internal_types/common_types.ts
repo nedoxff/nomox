@@ -57,7 +57,7 @@ export type RawTweet = {
 		eligibility: string;
 	};
 	conversation_muted: boolean;
-	is_translatable: boolean;
+	is_translatable?: boolean;
 };
 
 export type RawTextEntities = {
@@ -136,7 +136,7 @@ export type RawTweetMedia = {
 	};
 	display_url: string;
 	expanded_url: string;
-	ext_media_availability: {
+	ext_media_availability?: {
 		status: string;
 	};
 	sizes: Record<

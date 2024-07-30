@@ -60,6 +60,10 @@ const ru = {
 					"не удалось {action|{bookmark: добавить этот твит в закладки, unbookmark: удалить этот твит из закладок}}",
 				retweetFailed:
 					"не удалось {action|{retweet: ретвитнуть этот твит, unretweet: удалить ретвит этого твита}}",
+
+				retweet: "ретвитнуть",
+				unretweet: "удалить ретвит",
+				quote: "цитировать",
 			},
 		},
 		retweeted: "ретвитнул",

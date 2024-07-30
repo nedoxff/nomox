@@ -4,6 +4,8 @@ import {
 	type OauthAuthorization,
 } from "../utils/oauth_utils";
 import { authorizedFetch } from "../utils/request_utils";
+import { staticData } from "../static/static_data";
+import { requireAuth } from "../middleware/auth";
 
 const LIKE_TWEET_ENDPOINT =
 	"https://api.twitter.com/graphql/lI07N6Otwv1PhnEgXILM7A/FavoriteTweet";
@@ -19,50 +21,105 @@ const UNBOOKMARK_TWEET_ENDPOINT =
 	"https://api.twitter.com/graphql/G-V_AGDp-QKivnyTUCtTjA/BookmarkDelete";
 
 export function registerTweetEndpoints(server: Express) {
-	server.put("/tweet/:id/like", async (req, res) => {
-		const auth = getAuthorization(req.headers.authorization);
-		if (auth instanceof Error) {
-			res.status(401).end(auth.message);
-			return;
-		}
-
-		await genericTweetAction(auth, LIKE_TWEET_ENDPOINT, req.params.id, res);
-	});
-
-	server.put("/tweet/:id/unlike", async (req, res) => {
-		const auth = getAuthorization(req.headers.authorization);
-		if (auth instanceof Error) {
-			res.status(401).end(auth.message);
-			return;
-		}
-
-		await genericTweetAction(auth, UNLIKE_TWEET_ENDPOINT, req.params.id, res);
-	});
-
-	server.put("/tweet/:id/bookmark", async (req, res) => {
-		const auth = getAuthorization(req.headers.authorization);
-		if (auth instanceof Error) {
-			res.status(401).end(auth.message);
-			return;
-		}
-
-		await genericTweetAction(auth, BOOKMARK_TWEET_ENDPOINT, req.params.id, res);
-	});
-
-	server.put("/tweet/:id/unbookmark", async (req, res) => {
-		const auth = getAuthorization(req.headers.authorization);
-		if (auth instanceof Error) {
-			res.status(401).end(auth.message);
-			return;
-		}
-
+	server.put("/tweet/:id/like", requireAuth, async (req, res) => {
 		await genericTweetAction(
-			auth,
+			getAuthorization(req),
+			LIKE_TWEET_ENDPOINT,
+			req.params.id,
+			res,
+		);
+	});
+
+	server.put("/tweet/:id/unlike", requireAuth, async (req, res) => {
+		await genericTweetAction(
+			getAuthorization(req),
+			UNLIKE_TWEET_ENDPOINT,
+			req.params.id,
+			res,
+		);
+	});
+
+	server.put("/tweet/:id/bookmark", requireAuth, async (req, res) => {
+		await genericTweetAction(
+			getAuthorization(req),
+			BOOKMARK_TWEET_ENDPOINT,
+			req.params.id,
+			res,
+		);
+	});
+
+	server.put("/tweet/:id/unbookmark", requireAuth, async (req, res) => {
+		await genericTweetAction(
+			getAuthorization(req),
 			UNBOOKMARK_TWEET_ENDPOINT,
 			req.params.id,
 			res,
 		);
 	});
+
+	server.put("/tweet/:id/retweet", requireAuth, async (req, res) => {
+		await retweet(getAuthorization(req), req.params.id, res);
+	});
+
+	server.put("/tweet/:id/unretweet", requireAuth, async (req, res) => {
+		await unretweet(getAuthorization(req), req.params.id, res);
+	});
+}
+
+async function retweet(auth: OauthAuthorization, id: string, res: Response) {
+	const variables: Record<string, unknown> = {
+		includeTweetImpression: true,
+		includeHasBirdwatchNotes: false,
+		includeEditPerspective: false,
+		includeEditControl: false,
+		tweet_id: id,
+	};
+	const features: Record<string, unknown> = staticData.tweetFeatures.personal;
+
+	const response = await authorizedFetch(
+		"POST",
+		RETWEET_ENDPOINT,
+		auth,
+		undefined,
+		JSON.stringify({
+			variables: JSON.stringify(variables),
+			features: JSON.stringify(features),
+		}),
+	);
+
+	if (!response.ok) {
+		res.status(500).json(await response.json());
+		return;
+	}
+
+	res.sendStatus(200);
+}
+
+async function unretweet(auth: OauthAuthorization, id: string, res: Response) {
+	const variables: Record<string, unknown> = {
+		includeTweetImpression: true,
+		includeHasBirdwatchNotes: false,
+		includeEditPerspective: false,
+		includeEditControl: false,
+		source_tweet_id: id,
+	};
+
+	const response = await authorizedFetch(
+		"POST",
+		UNRETWEET_ENDPOINT,
+		auth,
+		undefined,
+		JSON.stringify({
+			variables: JSON.stringify(variables),
+		}),
+	);
+
+	if (!response.ok) {
+		res.status(500).json(await response.json());
+		return;
+	}
+
+	res.sendStatus(200);
 }
 
 async function genericTweetAction(

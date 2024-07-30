@@ -5,7 +5,6 @@ import {
 	type TweetVideo,
 } from "~/api/types/tweet";
 
-import { useI18nContext } from "~/i18n/i18n-solid";
 import TweetVideoRenderer from "./TweetVideoRenderer";
 import TweetImageRenderer from "./TweetImageRenderer";
 

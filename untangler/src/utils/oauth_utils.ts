@@ -4,6 +4,7 @@ import {
 	CONSUMER_AUTH_PASSWORD,
 	CONSUMER_AUTH_USERNAME,
 } from "../static/static_data";
+import type { Request } from "express";
 
 const OAUTH_REALM = "http://api.twitter.com/";
 
@@ -69,24 +70,16 @@ export type OauthAuthorization = {
 	secret: string;
 };
 
-export function getAuthorization(
-	encoded: string | undefined,
-): OauthAuthorization | Error {
-	if (encoded === undefined) {
-		return new Error("no authorization header sent");
-	}
-	const decoded = Buffer.from(encoded.replace("Basic ", ""), "base64")
-		.toString("utf-8")
-		.split(":");
-
-	if (decoded.length !== 2 || decoded[0] === "" || decoded[1] === "") {
-		return new Error(
-			'expected the authorization header to be a basic token ("oauth_token:oauth_secret" in base64)',
+export function getAuthorization(req: Request): OauthAuthorization {
+	const header = req.headers.authorization;
+	if (header === undefined) {
+		throw new Error(
+			"the authorization header was null. use the auth middleware in every route that requires it",
 		);
 	}
 
-	return {
-		token: decoded[0],
-		secret: decoded[1],
-	};
+	const decoded = Buffer.from(header.replace("Basic ", ""), "base64")
+		.toString("utf-8")
+		.split(":");
+	return { token: decoded[0], secret: decoded[1] };
 }

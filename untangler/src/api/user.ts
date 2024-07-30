@@ -11,6 +11,7 @@ import type {
 	RawGetSelfUserResponse,
 	RawGetUserResponse,
 } from "./internal_types/user_types";
+import { requireAuth } from "../middleware/auth";
 
 const GET_SELF_USER_ENDPOINT =
 	"https://api.twitter.com/graphql/851wLy502Jw3dVkLYkyC2Q/ViewerUserQuery";
@@ -20,12 +21,8 @@ const GET_USER_BY_NAME_ENDPOINT =
 	"https://api.twitter.com/graphql/y7PWoOVmiT2ClYTrnUx34Q/UserResultByScreenNameQuery";
 
 export function registerUserEndpoints(server: Express) {
-	server.get("/user/:criteria/:id?", async (req, res) => {
-		const auth = getAuthorization(req.headers.authorization);
-		if (auth instanceof Error) {
-			res.status(401).end(auth.message);
-			return;
-		}
+	server.get("/user/:criteria/:id?", requireAuth, async (req, res) => {
+		const auth = getAuthorization(req);
 
 		switch (req.params.criteria) {
 			case "self": {

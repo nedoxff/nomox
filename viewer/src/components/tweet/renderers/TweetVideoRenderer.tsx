@@ -17,16 +17,6 @@ import {
 } from "~/components/ui/slider";
 import { Button } from "~/components/ui/button";
 import {
-	IoContract,
-	IoExpand,
-	IoPause,
-	IoPlay,
-	IoVolumeHigh,
-	IoVolumeHighOutline,
-	IoVolumeMute,
-	IoVolumeMuteOutline,
-} from "solid-icons/io";
-import {
 	TbMaximize,
 	TbMinimize,
 	TbPictureInPicture,
@@ -37,11 +27,6 @@ import {
 	TbVolumeOff,
 } from "solid-icons/tb";
 import { createVisibilityObserver } from "@solid-primitives/intersection-observer";
-import {
-	Popover,
-	PopoverContent,
-	PopoverTrigger,
-} from "~/components/ui/popover";
 import {
 	HoverCard,
 	HoverCardContent,
@@ -324,7 +309,6 @@ function TweetVideoSoundSlider(props: {
 				<Slider
 					value={[volume()]}
 					onChange={(values) => {
-						console.log(values);
 						if (props.video.muted) {
 							props.video.muted = false;
 						}
