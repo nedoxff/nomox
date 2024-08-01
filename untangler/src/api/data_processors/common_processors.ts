@@ -12,7 +12,6 @@ import {
 	UserMentionEntity,
 	type TweetEntity,
 	TweetPhoto,
-	type TweetPhotoVariant,
 	TweetVideo,
 	type TweetVideoVariant,
 	type Tweet,
@@ -34,33 +33,27 @@ const convertMedia = (media: RawTweetMedia): TweetMedia => {
 					?.split(".")
 					.shift() ?? "";
 
-			const variants: Record<string, TweetPhotoVariant> = {};
-			for (const pair of Object.entries(media.sizes)) {
-				variants[pair[0]] = {
-					width: pair[1].w,
-					height: pair[1].h,
-					// todo: should the image type always be jpg?
-					url: `${IMAGE_ENDPOINT}/${realId}?name=${pair[0]}&format=jpg`,
-				};
-			}
+			const entries = Object.entries(media.sizes);
+			entries.sort((f, s) => s[1].w - f[1].w);
 
-			const largestVariant = Object.values(media.sizes).reduce(
-				(prev, current) => (prev && prev.w > current.w ? prev : current),
-			) ?? {
-				w: media.original_info.width,
-				h: media.original_info.height,
-				resize: "fit",
-			};
+			const variants: string[] = entries.map((e) => e[0]);
+			const largestVariant =
+				entries.length === 0
+					? {
+							w: media.original_info.width,
+							h: media.original_info.height,
+							resize: "fit",
+						}
+					: entries[0][1];
 
 			return new TweetPhoto(
-				media.id_str,
+				realId,
 				{
 					width: largestVariant.w,
 					height: largestVariant.h,
 					aspectRatio: largestVariant.w / largestVariant.h,
 				},
 				variants,
-				realId,
 			);
 		}
 		case "video": {
@@ -91,6 +84,15 @@ const convertMedia = (media: RawTweetMedia): TweetMedia => {
 			throw new Error(`unknown media type "${media.type}"`);
 		}
 	}
+};
+
+const extractProfileMediaId = (raw: string) => {
+	const format = raw.split(".").pop();
+	const split = raw.split("/");
+	return `${split.at(-2)}/${split
+		.at(-1)
+		?.replace(/(\..*)/gi, "")
+		.replaceAll("_normal", "")}/${format}`;
 };
 
 const nullIfEmpty = (str?: string) =>
@@ -191,18 +193,16 @@ export function convertRawUser(user: RawUser): User {
 							),
 						},
 			location: nullIfEmpty(user.legacy.location),
-			bannerUrl: nullIfEmpty(user.legacy.profile_banner_url),
-			image:
-				user.legacy.profile_image_url_https === "" ||
-				user.legacy.profile_image_url_https === undefined
+			banner:
+				user.legacy.profile_banner_url === undefined ||
+				user.legacy.profile_banner_url === ""
 					? null
-					: {
-							thumbnail: user.legacy.profile_image_url_https,
-							best: user.legacy.profile_image_url_https.replaceAll(
-								"_normal.",
-								".",
-							),
-						},
+					: extractProfileMediaId(user.legacy.profile_banner_url),
+			image:
+				user.legacy.profile_image_url_https === undefined ||
+				user.legacy.profile_image_url_https === ""
+					? null
+					: extractProfileMediaId(user.legacy.profile_image_url_https),
 			preferences: {
 				backgroundColor: user.legacy.profile_background_color,
 				linkColor: user.legacy.profile_link_color,

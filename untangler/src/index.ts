@@ -7,6 +7,7 @@ import { registerAuthEndpoints } from "./api/auth";
 import { registerTimelineEndpoints } from "./api/timeline";
 import { registerUserEndpoints } from "./api/user";
 import { registerTweetEndpoints } from "./api/tweet";
+import { registerMediaEndpoints } from "./api/media";
 
 const app = express();
 app.use(pino());
@@ -18,6 +19,7 @@ registerAuthEndpoints(app);
 registerTimelineEndpoints(app);
 registerUserEndpoints(app);
 registerTweetEndpoints(app);
+registerMediaEndpoints(app);
 
 setStaticData()
 	.catch((e) => {

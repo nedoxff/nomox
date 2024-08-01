@@ -60,18 +60,11 @@ export abstract class TweetMedia {
 }
 
 export class TweetPhoto extends TweetMedia {
-	variants: Record<string, TweetPhotoVariant>;
-	cdnId: string;
+	variants: string[];
 
-	constructor(
-		_id: string,
-		_size: TweetMediaOriginalSize,
-		_variants: Record<string, TweetPhotoVariant>,
-		_cdnId: string,
-	) {
+	constructor(_id: string, _size: TweetMediaOriginalSize, _variants: string[]) {
 		super(TweetMediaType.Photo, _id, _size);
 		this.variants = _variants;
-		this.cdnId = _cdnId;
 	}
 }
 
@@ -100,12 +93,6 @@ export type TweetMediaOriginalSize = {
 export type TweetVideoVariant = {
 	contentType: string;
 	bitrate: number | null;
-	url: string;
-};
-
-export type TweetPhotoVariant = {
-	width: number;
-	height: number;
 	url: string;
 };
 

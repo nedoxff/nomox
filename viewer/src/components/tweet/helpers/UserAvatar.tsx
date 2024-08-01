@@ -14,11 +14,7 @@ export default function UserAvatar(props: {
 					class={`rounded-full ${props.class}`}
 					// biome-ignore lint/a11y/noRedundantAlt: <explanation>
 					alt={`${props.user.profile.displayName}'s profile picture`}
-					src={
-						props.quality === "thumbnail"
-							? props.user.profile.image?.thumbnail
-							: props.user.profile.image?.best
-					}
+					src={`${import.meta.env.VITE_API_BASE}/media/profile-image/${props.user.profile.image}/${props.quality}`}
 				/>
 			</Match>
 		</Switch>

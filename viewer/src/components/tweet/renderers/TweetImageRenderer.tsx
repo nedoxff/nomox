@@ -19,23 +19,17 @@ type ImageFormat = "jpg" | "png" | "webp";
 export default function TweetImageRenderer(props: { photo: TweetPhoto }) {
 	const { LL } = useI18nContext();
 	let image!: HTMLImageElement;
-	const variants = Object.keys(props.photo.variants);
-	const variant = variants.includes("medium")
+	const variant = props.photo.variants.includes("medium")
 		? "medium"
-		: variants.includes("large")
+		: props.photo.variants.includes("large")
 			? "large"
-			: Object.entries(props.photo.variants).reduce((prev, current) =>
-					prev && prev[1].width > current[1].width ? prev : current,
-				)[0];
+			: props.photo.variants[0];
 
 	const getBestLink = (format: ImageFormat) => {
-		// TODO: the image CDN API might change, not sure if this is the best way to obtain the URL
-		// MAYBE pass all of this to the untangler?
-		return Object.entries(props.photo.variants)
-			.reduce((prev, current) =>
-				prev && prev[1].width > current[1].width ? prev : current,
-			)[1]
-			.url.replace("&format=jpg", `&format=${format}`);
+		const bestVariant = props.photo.variants.includes("large")
+			? "large"
+			: props.photo.variants[0];
+		return `${import.meta.env.VITE_API_BASE}/media/image/${props.photo.id}/${format}/${bestVariant}`;
 	};
 
 	const getBestBlob = async (format: ImageFormat) => {
@@ -44,18 +38,12 @@ export default function TweetImageRenderer(props: { photo: TweetPhoto }) {
 
 	const downloadImage = async (format: ImageFormat) => {
 		try {
-			const blob = await getBestBlob(format);
-			const filename = `${props.photo.cdnId}.${format}`;
-
-			const url = window.URL.createObjectURL(blob);
 			const a = document.createElement("a");
 			a.style.display = "none";
-			a.href = url;
-			a.download = filename;
+			a.href = `${getBestLink(format)}?download`;
 			document.body.appendChild(a);
 			a.click();
 			document.body.removeChild(a);
-			window.URL.revokeObjectURL(url);
 
 			toast.success(LL().tweet.actions.save.success());
 		} catch (e) {
@@ -98,7 +86,7 @@ export default function TweetImageRenderer(props: { photo: TweetPhoto }) {
 						ref={image}
 						draggable={false}
 						class="rounded-xl w-full"
-						src={props.photo.variants[variant].url}
+						src={`${import.meta.env.VITE_API_BASE}/media/image/${props.photo.id}/jpg/${variant}`}
 						alt=""
 					/>
 				</AspectRatio>
