@@ -192,8 +192,20 @@ export class LoginFlowMachine
 				});
 				break;
 			}
+			case "RedirectToPasswordReset": {
+				break;
+			}
 			default: {
 				logger.warn(`unknown subtask id found: ${subtask.subtask_id}`);
+				this.onObstacle({
+					id: this.id,
+					code: "UNKNOWN_ONBOARDING_TASK",
+					description:
+						"nomox doesn't know how to process this onboarding task. please create an issue on github: https://github.com/nedoxff/nomox",
+					data: {
+						task: subtask.subtask_id,
+					},
+				});
 				break;
 			}
 		}
